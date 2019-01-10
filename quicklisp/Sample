@@ -1,0 +1,94 @@
+To load software, use:
+
+    (ql:quickload system-name)
+
+For example:
+
+    CL-USER> (ql:quickload "vecto")
+    To load "vecto":
+      Install 5 Quicklisp releases:
+	cl-vectors salza2 vecto zpb-ttf zpng
+    loading output here
+
+Quicklisp will automatically download any supporting software it needs to load the system.
+
+Please note that some systems have different names than their projects. For example, to load cl-yacc's system, run (ql:quickload "yacc"), not (ql:quickload "cl-yacc").
+
+ql:quickload can also be used to load local systems that aren't part of Quicklisp. If the local system depends on software that is available through Quicklisp, the dependencies will be automatically loaded.
+
+By default, ql:quickload hides most compilation and loading output, including warnings, and shows progess as a series of dots. You can show full compilation and loading output by passing :verbose t as arguments to ql:quickload. This output can be especially helpful when reporting and troubleshooting problems.
+
+To remove software, use:
+
+    (ql:uninstall system-name)
+
+For example:
+
+    CL-USER> (ql:uninstall "vecto")
+    T
+
+An uninstall does the following:
+
+    Deletes the system's tarball archive and unpacked source files
+    Deletes Quicklisp metadata files associated with the system
+    Clears ASDF's system cache via asdf:clear-system 
+
+Uninstalling does not alter the current Lisp session in any other way; if the given system has been loaded, it remains loaded and accessible until the session is ended.
+
+To find out what's available in Quicklisp, use:
+
+    (ql:system-apropos substring)
+
+For example:
+
+    CL-USER> (ql:system-apropos "xml")
+    #<SYSTEM bknr.xml / bknr-datastore-20100916-git / quicklisp 2010-09-16>
+    #<SYSTEM cl-libxml2 / cl-libxml2-0.3.4 / quicklisp 2010-09-16>
+    #<SYSTEM cxml / cxml-20100916-git / quicklisp 2010-09-16>
+    #<SYSTEM cxml-dom / cxml-20100916-git / quicklisp 2010-09-16>
+    #<SYSTEM cxml-klacks / cxml-20100916-git / quicklisp 2010-09-16>
+    #<SYSTEM cxml-rng / cxml-rng-2008-11-30 / quicklisp 2010-09-16>
+    #<SYSTEM cxml-rpc / cxml-rpc-20100916-git / quicklisp 2010-09-16>
+    #<SYSTEM cxml-stp / cxml-stp-2008-11-30 / quicklisp 2010-09-16>
+    #<SYSTEM cxml-stp-test / cxml-stp-2008-11-30 / quicklisp 2010-09-16>
+    #<SYSTEM cxml-test / cxml-20100916-git / quicklisp 2010-09-16>
+    #<SYSTEM cxml-xml / cxml-20100916-git / quicklisp 2010-09-16>
+    #<SYSTEM pithy-xml / pithy-xml-20100916-git / quicklisp 2010-09-16>
+    #<SYSTEM s-xml / s-xml-20100916-http / quicklisp 2010-09-16>
+    #<SYSTEM s-xml-rpc / s-xml-rpc-20100916-http / quicklisp 2010-09-16>
+    #<SYSTEM xml-render / cl-typesetting-20100916-svn / quicklisp 2010-09-16>
+    #<SYSTEM xmls / xmls-1.3 / quicklisp 2010-09-16>
+
+The system name is the word after "SYSTEM" and before the first "/", e.g. "cxml-stp". System names are used by ql:quickload and for expressing dependency information in system definitions.
+
+While ql:system-apropos is useful for simple string searches of system and project names, Quickdocs provides a more general full-text search for systems and projects.
+
+To load Quicklisp when you start Lisp, use:
+
+    (ql:add-to-init-file)
+
+Quicklisp will append code to your Lisp's init file that will load Quicklisp on startup.
+
+To install and configure SLIME, use:
+
+    (ql:quickload "quicklisp-slime-helper")
+
+Then follow the directions it displays. quicklisp-slime-helper will create a file you can load in Emacs that configures the right load-path for loading Quicklisp's installation of SLIME.
+
+To get updated software, use:
+
+    (ql:update-dist "quicklisp")
+
+Software updates are usually available about once per month.
+
+To update the Quicklisp client, use:
+
+    (ql:update-client)
+
+Quicklisp client updates are usually available a few times per year.
+
+To go back to a previous set of libraries, see the blog post Going back in (dist) time. This can be useful if your project depends on the state (APIs, etc) of the Quicklisp library universe from a particular point in time.
+
+To see what systems depend on a particular system, use:
+
+   (ql:who-depends-on system-name)
