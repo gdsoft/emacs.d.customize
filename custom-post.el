@@ -10,9 +10,23 @@
 
 ;; Treemacs
 (with-eval-after-load 'treemacs
- (treemacs-reset-icons) ; Treemacs custom icons
- (evil-define-key 'normal treemacs-mode-map (kbd "o") 'treemacs-RET-action)
- (evil-define-key 'normal treemacs-mode-map (kbd "F") 'treemacs-create-file)
- (evil-define-key 'normal treemacs-mode-map (kbd "+") 'treemacs-create-dir))
+  (treemacs-reset-icons) ; Treemacs custom icons
+  (evil-define-key 'normal treemacs-mode-map (kbd "o") 'treemacs-RET-action)
+  (evil-define-key 'normal treemacs-mode-map (kbd "F") 'treemacs-create-file)
+  (evil-define-key 'normal treemacs-mode-map (kbd "+") 'treemacs-create-dir))
+
+(use-package evil-magit
+  :ensure t
+  :defer t
+  :after evil magit
+  :init
+  ;; optional: this is the evil state that evil-magit will use
+  (setq evil-magit-state 'normal)
+  ;; optional: disable additional bindings for yanking text
+  (setq evil-magit-use-y-for-yank t)
+  :config
+  (evil-magit-revert))
+
+(require'evil-magit)
 
 ;;; custom-post.el ends here
