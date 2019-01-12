@@ -27,6 +27,7 @@
   :config
   (evil-magit-revert))
 
-(require'evil-magit)
+(with-eval-after-load 'magit
+  (require'evil-magit))
 
 ;;; custom-post.el ends here
