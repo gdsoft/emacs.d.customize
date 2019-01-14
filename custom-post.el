@@ -4,6 +4,11 @@
 ;;;       Put your own configurations in custom-post.el to override default configurations.
 ;;; Code:
 
+;; 显示行号
+(use-package linum :ensure t)
+(global-linum-mode t)
+(set-face-foreground 'linum "orange")
+
 ;; Treemacs
 (with-eval-after-load 'treemacs
   (treemacs-reset-icons) ; Treemacs custom icons

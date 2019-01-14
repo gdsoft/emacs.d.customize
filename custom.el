@@ -73,4 +73,6 @@
  ;; If there is more than one, they won't work right.
  )
 
+(add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode -1)))
+
 ;;; custom.el ends here
