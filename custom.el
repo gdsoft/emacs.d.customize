@@ -93,7 +93,7 @@
 (defvar load-path-list)
 (setq load-path-list
       '(
-        "~/.emacs.d.customize"
+        "~/.emacs.d.customize/customs"
         "~/.emacs.d.customize/language"
         "~/.emacs.d.customize/download"
         "~/.emacs.d.customize/download/common"

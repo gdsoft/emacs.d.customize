@@ -4,9 +4,6 @@
 ;;;       Put your own configurations in custom-post.el to override default configurations.
 ;;; Code:
 
-(require 'awesome-tab)
-(awesome-tab-mode t)
-
 ;; 使用f7键打开内容搜索
 (global-set-key [f7] 'projectile-ag)
 
@@ -51,7 +48,7 @@
                                         ;custom-dired
                                         ;custom-ivy
                                         ;custom-pair
-                                        ;custom-tab
+        custom-tab
         custom-encoding
                                         ;language
         ))
