@@ -73,8 +73,6 @@
  ;; If there is more than one, they won't work right.
  )
 
-(add-hook 'prog-mode-hook (lambda() (display-line-numbers-mode -1)))
-
 ;; 多行注释
 (defun my-comment-or-uncomment-region (beg end &optional arg)
   "Comment or uncomment region (BEG END ARG)."
@@ -101,5 +99,10 @@
         "~/.emacs.d.customize/download/awesome"
         ))
 (setq load-path (append load-path load-path-list))
+
+(add-hook 'prog-mode-hook
+          (lambda()
+            (display-line-numbers-mode -1)
+            (require 'custom-pair)))
 
 ;;; custom.el ends here

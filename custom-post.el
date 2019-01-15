@@ -36,7 +36,7 @@
   (evil-magit-revert))
 
 (with-eval-after-load 'magit
-  (require'evil-magit))
+  (require 'evil-magit))
 
 (defvar require-list)
 (setq require-list
@@ -44,10 +44,6 @@
         install-elisp
                                         ;custom-shell
                                         ;custom-anything
-                                        ;custom-company
-                                        ;custom-dired
-                                        ;custom-ivy
-                                        ;custom-pair
         custom-tab
         custom-encoding
                                         ;language

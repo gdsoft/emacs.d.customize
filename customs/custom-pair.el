@@ -1,8 +1,7 @@
-;;; custom-pair.el --- Awesome-pair settings
+;;; custom-pair.el --- user customization file    -*- no-byte-compile: t -*-
 ;;; Commentary:
 
 ;;; Code:
-(add-to-list 'load-path "~/.emacs.d/lisp/download/awesome")
 (require 'awesome-pair)
 
 (dolist (hook (list
