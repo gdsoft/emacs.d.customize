@@ -4,6 +4,9 @@
 ;;;       Put your own configurations in custom-post.el to override default configurations.
 ;;; Code:
 
+(require 'awesome-tab)
+(awesome-tab-mode t)
+
 ;; 使用f7键打开内容搜索
 (global-set-key [f7] 'projectile-ag)
 
@@ -38,10 +41,6 @@
 (with-eval-after-load 'magit
   (require'evil-magit))
 
-(add-to-list 'load-path "~/.emacs.d.customize")
-(add-to-list 'load-path "~/.emacs.d.customize/download")
-(add-to-list 'load-path "~/.emacs.d.customize/download/common")
-
 (defvar require-list)
 (setq require-list
       '(
@@ -52,7 +51,7 @@
                                         ;custom-dired
                                         ;custom-ivy
                                         ;custom-pair
-        custom-tab
+                                        ;custom-tab
         custom-encoding
                                         ;language
         ))

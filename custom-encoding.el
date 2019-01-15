@@ -2,7 +2,6 @@
 ;;; Commentary:
 
 ;;; Code:
-(add-to-list 'load-path "~/.emacs.d.customize/download/common")
 (require 'unicad)
 
 ;; 设置编辑环境
@@ -54,5 +53,5 @@
 ;; 解决文件目录名乱码
 (setq-default pathname-coding-system 'utf-8)
 
-(provide 'custome-encoding)
+(provide 'custom-encoding)
 ;;; custom-encoding.el ends here

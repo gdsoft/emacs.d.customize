@@ -90,4 +90,16 @@
 ;; （Y or N）
 (fset 'yes-or-no-p 'y-or-n-p)
 
+(defvar load-path-list)
+(setq load-path-list
+      '(
+        "~/.emacs.d.customize"
+        "~/.emacs.d.customize/language"
+        "~/.emacs.d.customize/download"
+        "~/.emacs.d.customize/download/common"
+        "~/.emacs.d.customize/download/aweshell"
+        "~/.emacs.d.customize/download/awesome"
+        ))
+(setq load-path (append load-path load-path-list))
+
 ;;; custom.el ends here
