@@ -80,8 +80,7 @@
                    (list (region-beginning) (region-end) nil)
                  (list (line-beginning-position)
                        (line-beginning-position 2))))
-  (comment-or-uncomment-region beg end arg)
-  )
+  (comment-or-uncomment-region beg end arg))
 (global-set-key [remap comment-or-uncomment-region] 'my-comment-or-uncomment-region)
 (global-set-key (kbd "C-c ;") 'comment-or-uncomment-region)
 
@@ -95,7 +94,6 @@
         "~/.emacs.d.customize/language"
         "~/.emacs.d.customize/download"
         "~/.emacs.d.customize/download/common"
-        "~/.emacs.d.customize/download/aweshell"
         "~/.emacs.d.customize/download/awesome"
         ))
 (setq load-path (append load-path load-path-list))

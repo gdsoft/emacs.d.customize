@@ -1,8 +1,7 @@
-;;; language.el --- Develop language settings
+;;; custom-language.el --- user customization file    -*- no-byte-compile: t -*-
 ;;; Commentary:
 
 ;;; Code:
-(add-to-list 'load-path "~/.emacs.d.customize/language")
 
 ;; Language Server Protocol
 (use-package lsp-mode :ensure t)
@@ -66,5 +65,5 @@
 ;; --- Ruby ---
 ;(require 'my-rails)
 
-(provide 'language)
-;;; language.el ends here
+(provide 'custom-language)
+;;; custom-language.el ends here

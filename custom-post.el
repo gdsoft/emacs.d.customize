@@ -42,14 +42,11 @@
 (setq require-list
       '(
         install-elisp
-                                        ;custom-shell
-                                        ;custom-anything
         custom-tab
         custom-encoding
-                                        ;language
+        custom-language
         ))
 
-(dolist (req require-list)
-  (require req))
+(dolist (req require-list) (require req))
 
 ;;; custom-post.el ends here

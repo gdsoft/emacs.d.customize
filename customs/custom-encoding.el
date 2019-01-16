@@ -1,4 +1,4 @@
-;;; custome-encoding.el --- user customization file    -*- no-byte-compile: t -*-
+;;; custom-encoding.el --- user customization file    -*- no-byte-compile: t -*-
 ;;; Commentary:
 
 ;;; Code:
