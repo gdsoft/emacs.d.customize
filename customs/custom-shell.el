@@ -95,6 +95,17 @@
 
 (add-hook 'term-mode-hook
           (lambda ()
+            ;; https://github.com/fish-shell/fish-shell/issues/1411
+            ;; fish in emacs ansi-term prints an extra "⏎" #1411
+            ;; fixed
+            (toggle-truncate-lines)
+            (setq term-prompt-regexp "^.*❯❯❯ ")
+            (make-local-variable 'mouse-yank-at-point)
+            (setq mouse-yank-at-point t)
+            (make-local-variable 'transient-mark-mode)
+            (setq transient-mark-mode nil)
+            (setq yas-dont-activate t)
+
             ;;  mkdir -p ~/.terminfo
             ;;  tic -o ~/.terminfo /app/emacs/emacs/etc/e/eterm-color.ti
             ;; ~/.terminfo/65 -> ~/.terminfo/e
