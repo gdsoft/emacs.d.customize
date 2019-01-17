@@ -73,6 +73,14 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; 缩进默认设置
+(setq-default
+ ;; 缩进默认是2个空格
+ tab-width 2
+ standard-indent 2
+ ;; Tab改为插入空格
+ indent-tabs-mode nil)
+
 ;; 多行注释
 (defun my-comment-or-uncomment-region (beg end &optional arg)
   "Comment or uncomment region (BEG END ARG)."

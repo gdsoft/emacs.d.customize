@@ -42,8 +42,9 @@
 (setq require-list
       '(
         install-elisp
-        custom-tab
         custom-encoding
+        custom-tab
+        custom-shell
         custom-language
         ))
 
