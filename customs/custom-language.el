@@ -47,7 +47,7 @@
 (setq c-default-style "linux")
 
 ;; --- Go ---
-(require 'my-golang)
+                                        ;(require 'my-golang)
 
 ;; --- Javascript ---
 (require 'my-js)

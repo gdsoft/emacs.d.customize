@@ -1,4 +1,4 @@
-;;; my-golang.el --- Golang develop environment configure
+;;; custom-golang.el --- user customization file    -*- no-byte-compile: t -*-
 ;;; Commentary:
 
 ;;; Code:
@@ -51,5 +51,5 @@
 (use-package go-autocomplete :ensure t)
 (ac-config-default)
 
-(provide 'my-golang)
-;;; my-golang.el ends here
+(provide 'custom-golang)
+;;; custom-golang.el ends here
