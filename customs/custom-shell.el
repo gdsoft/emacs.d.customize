@@ -3,26 +3,28 @@
 
 ;;; Code:
 (use-package shell-pop
-  :init (let ((shell-type
-               (if sys/win32p
-                   '("eshell" "*eshell*" (lambda () (eshell)))
-                 '("multi-term" "*terminal*" (lambda () (multi-term))))))
+  :init
+  (let ((shell-type
+         (if sys/win32p
+             '("eshell" "*eshell*" (lambda () (eshell)))
+           '("multi-term" "*terminal*" (lambda () (multi-term))))))
 
-          (setq shell-pop-shell-type shell-type)
+    (setq shell-pop-shell-type shell-type))
 
-          (global-set-key [f9] '(lambda ()
-                                  "Shell popup."
-                                  (interactive)
-                                  (if (cl-search "terminal" (buffer-name))
-                                      (shell-pop-out)
-                                    (shell-pop-up 1))))
+  (require 'shell-pop)
+  (global-set-key [f9] '(lambda ()
+                          "Shell popup."
+                          (interactive)
+                          (if (cl-search "terminal" (buffer-name))
+                              (shell-pop-out)
+                            (shell-pop-up 1))))
 
-          ;; C-x t で multi-term を起動する
-          (global-set-key (kbd "C-x t o") '(lambda ()
-                                             "Get shell buffer."
-                                             (interactive)
-                                             ))))
-(require 'shell-pop)
+  ;; C-x t で multi-term を起動する
+  (global-set-key (kbd "C-x t o") '(lambda ()
+                                     "Get shell buffer."
+                                     (interactive)
+                                     (multi-term)
+                                     )))
 
 ;; shell の存在を確認
 (defun skt:shell ()
