@@ -46,9 +46,6 @@
 ;; 没有这个 { } 就会瞎搞
 (setq c-default-style "linux")
 
-;; --- Go ---
-                                        ;(require 'my-golang)
-
 ;; --- Javascript ---
 (require 'my-js)
 
@@ -56,14 +53,14 @@
 (require 'my-rust)
 
 ;; --- Python ---
-;(add-hook 'python-mode-hook 'anaconda-mode)
+                                        ;(add-hook 'python-mode-hook 'anaconda-mode)
 
 ;; 补全
-;(elpy-enable)
-;(setq elpy-rpc-backend "jedi")
+                                        ;(elpy-enable)
+                                        ;(setq elpy-rpc-backend "jedi")
 
 ;; --- Ruby ---
-;(require 'my-rails)
+                                        ;(require 'my-rails)
 
 (provide 'custom-language)
 ;;; custom-language.el ends here

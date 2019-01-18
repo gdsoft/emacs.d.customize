@@ -29,8 +29,8 @@
 ;; shell の存在を確認
 (defun skt:shell ()
   "Find shell."
-  (or (executable-find "fish")
-      (executable-find "zsh")
+  (or (executable-find "zsh")
+      (executable-find "fish")
       (executable-find "bash")
       ;; (executable-find "f_zsh") ;; Emacs + Cygwin を利用する人は Zsh の代りにこれにしてください
       ;; (executable-find "f_bash") ;; Emacs + Cygwin を利用する人は Bash の代りにこれにしてください
