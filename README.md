@@ -24,6 +24,7 @@ ln -s  ~/.emacs.d.customize/custom-post.el ~/.emacs.d/custom-post.el
 - need install Go 1.11 or above
 
 ``` shell
+go get -u -v golang.org/x/tools/cmd/gotype
 go get -u -v golang.org/x/tools/cmd/cover
 go get -u -v golang.org/x/tools/cmd/guru
 go get -u -v golang.org/x/tools/cmd/gorename
@@ -33,11 +34,13 @@ go get -u -v github.com/derekparker/delve/cmd/dlv
 go get -u -v github.com/fatih/gomodifytags
 go get -u -v github.com/k0kubun/pp
 go get -u -v github.com/motemen/gore
-go get -u -v github.com/nsf/gocode
 go get -u -v github.com/jstemmer/gotags
+go get -u -v github.com/josharian/impl
 go get -u -v github.com/rogpeppe/godef
 go get -u -v github.com/sourcegraph/go-langserver
 go get -u -v github.com/golang/lint/golint
+go get -u -v github.com/cweill/gotests/...
+go get -u -v github.com/mdempsky/gocode # or github.com/nsf/gocode
 gocode set autobuild true
 
 git clone https://github.com/saibing/bingo.git
