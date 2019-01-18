@@ -57,6 +57,11 @@
 
 (setenv "SHELL" shell-file-name)
 
+;; for lsp-go
+;; replace backspace to ":"
+;;(let ((gopath (getenv "GOPATH")))
+;;  (setenv "GOPATH" (replace-regexp-in-string "[^a-zA-Z/_]+" ":" gopath)))
+
 (with-eval-after-load 'multi-term
   ;; "C-z"、"C-x"、"C-c"、"C-h"、"C-y"、"<ESC>" のキーが奪われなくなりますので、ほとんどの操作は Emacs 的にできるはずです。
   ;; 他のキーも奪われたくなければ以下のようにキーを追加します。
