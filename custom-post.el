@@ -46,9 +46,7 @@
         custom-tab
         custom-shell
         custom-language
-        custom-golang
         ))
-
 (dolist (req require-list) (require req))
 
 ;;; custom-post.el ends here
