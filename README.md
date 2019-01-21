@@ -107,7 +107,19 @@ npm install -g typescript
 ``` shell
 apt-get install silversearcher-ag
 brew install the_silver_searcher
+```
 
+## Error ##
+
+- If show under error message
+- `No word lists can be found for the language "en_US".`
+
+``` shell
+# Ubuntu
+sudo apt-get install aspell-en
+
+# Arch
+sudo yay -S aspell-en
 ```
 
 -------------------------------------------------------------------------------
