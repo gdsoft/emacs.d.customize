@@ -70,6 +70,19 @@ npm install -g typescript
 
 -------------------------------------------------------------------------------
 
+## Clang LSP CCLS ##
+
+``` emacs-lisp
+;; For example:
+;;  You have a project with the C++ source code in ~/myproject.
+;;  Add the file ~/myproject/.dir-locals.el with the following content:
+
+((nil . ((eval . (setq flycheck-clang-include-path
+                       (list (expand-file-name "~/myproject/include/")))))))
+```
+
+-------------------------------------------------------------------------------
+
 ## Projectile ##
 
 - C-c p ?

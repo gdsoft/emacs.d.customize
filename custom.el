@@ -11,7 +11,7 @@
 ;; (setq centaur-package-archives 'emacs-china)   ; Package repo: melpa, melpa-mirror, emacs-china netease or tuna
 ;; (setq centaur-theme 'classic)                  ; Color theme: default, classic, doom, dark, light or daylight
 ;; (setq centaur-dashboard nil)                   ; Use dashboard at startup or not: t or nil
-(setq centaur-lsp nil)                         ; Set LSP client: lsp-mode, eglot or nil
+;; (setq centaur-lsp nil)                         ; Set LSP client: lsp-mode, eglot or nil
 ;; (setq centaur-ivy-icon nil)                    ; Display icons in ivy or not: t or nil
 ;; (setq centaur-benchmark t)                     ; Enable initialization benchmark or not: t or nil
 
@@ -64,14 +64,34 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(explicit-shell-file-name shell-file-name)
+ '(multi-term-dedicated-close-back-to-open-buffer-p t)
+ '(multi-term-dedicated-select-after-open-p t)
+ '(multi-term-dedicated-skip-other-window-p t)
+ '(multi-term-program shell-file-name)
+ '(safe-local-variable-values
+   (quote
+    ((eval setq flycheck-clang-include-path
+           (list
+            (expand-file-name "~/work/project/julius/plugin/")
+            (expand-file-name "~/work/project/julius/libsent/include/"))))))
+ '(shell-file-name (skt:shell))
+ '(system-uses-terminfo nil t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(aw-leading-char-face ((t (:inherit (quote error) :bold t :height 1.2))))
+ '(aw-mode-line-face ((t (:inherit (quote mode-line-emphasis) :bold t))))
+ '(awesome-tab-selected ((t (:inherit awesome-tab-default :foreground "green3" :overline "yellow" :underline "yellow" :weight ultra-bold :width semi-expanded))))
+ '(awesome-tab-separator ((t (:inherit awesome-tab-default :box (:line-width 2 :color "yellow" :style pressed-button) :height 0.1))))
+ '(awesome-tab-unselected ((t (:inherit awesome-tab-default :foreground "cyan" :overline "yellow" :underline "yellow" :weight ultra-bold :width semi-expanded))))
+ '(diff-hl-change ((t (:background "#46D9FF"))))
+ '(diff-hl-delete ((t (:background "#ff6c6b"))))
+ '(diff-hl-insert ((t (:background "#98be65"))))
+ '(hl-todo ((t (:box t :bold t)))))
 
 ;; 缩进默认设置
 (setq-default
