@@ -46,12 +46,6 @@
 ;; 没有这个 { } 就会瞎搞
                                         ;(setq c-default-style "linux")
 
-;; --- Javascript ---
-(require 'my-js)
-
-;; --- Rust ---
-                                        ;(require 'my-rust)
-
 ;; --- Python ---
                                         ;(add-hook 'python-mode-hook 'anaconda-mode)
 
