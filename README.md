@@ -39,6 +39,7 @@ go get -u -v github.com/josharian/impl
 go get -u -v github.com/rogpeppe/godef
 go get -u -v github.com/sourcegraph/go-langserver
 go get -u -v github.com/golang/lint/golint
+go get -u -v github.com/justjanne/powerline-go
 go get -u -v github.com/cweill/gotests/...
 go get -u -v github.com/mdempsky/gocode # or github.com/nsf/gocode
 gocode set autobuild true
