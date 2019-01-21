@@ -47,6 +47,7 @@
         custom-shell
         custom-language
                                         ;       custom-rust
+        custom-rails
         ))
 (dolist (req require-list) (require req))
 

@@ -1,4 +1,4 @@
-;;; Rails --- Rails keymap setting
+;;; custom-rails.el --- user customization file    -*- no-byte-compile: t -*-
 ;;; Commentary:
 
 ;;; Code:
@@ -214,6 +214,7 @@
   (projectile-rails-generate))
 
 (defun projectile-rails-generate-cmd (command)
+  "Projectile rails generate cmd (COMMAND)."
   (projectile-rails-with-root
    (let ((command-prefix (projectile-rails-with-preloader
                           :spring (concat projectile-rails-spring-command " rails generate " command)
@@ -244,12 +245,13 @@
   (projectile-rails-generate-cmd "integration_test "))
 
 (defun projectile-rails-cmd (command)
-    (projectile-rails-with-root
-     (compile (projectile-rails-with-preloader
-	       :spring (concat projectile-rails-spring-command " rails " command)
-	       :zeus (concat projectile-rails-zeus-command " " command)
-	       :vanilla (concat projectile-rails-vanilla-command " " command))
-	      'projectile-rails-mode)))
+  "Projectile rails with root (COMMAND)."
+  (projectile-rails-with-root
+   (compile (projectile-rails-with-preloader
+             :spring (concat projectile-rails-spring-command " rails " command)
+             :zeus (concat projectile-rails-zeus-command " " command)
+             :vanilla (concat projectile-rails-vanilla-command " " command))
+            'projectile-rails-mode)))
 
-(provide 'my-rails)
-;;; my-rails.el ends here
+(provide 'custom-rails)
+;;; custom-rails.el ends here
