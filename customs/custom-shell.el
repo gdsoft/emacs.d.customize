@@ -17,21 +17,14 @@
                           (interactive)
                           (if (cl-search "terminal" (buffer-name))
                               (shell-pop-out)
-                            (shell-pop-up 1))))
-
-  ;; C-x t で multi-term を起動する
-  (global-set-key (kbd "C-x t o") '(lambda ()
-                                     "Get shell buffer."
-                                     (interactive)
-                                     (multi-term)
-                                     )))
+                            (shell-pop-up 1)))))
 
 ;; shell の存在を確認
 (defun skt:shell ()
   "Find shell."
-  (or (executable-find "zsh")
+  (or (executable-find "bash")
       (executable-find "fish")
-      (executable-find "bash")
+      (executable-find "zsh")
       ;; (executable-find "f_zsh") ;; Emacs + Cygwin を利用する人は Zsh の代りにこれにしてください
       ;; (executable-find "f_bash") ;; Emacs + Cygwin を利用する人は Bash の代りにこれにしてください
       (executable-find "cmdproxy")
@@ -138,6 +131,7 @@
 
             (define-key term-raw-map (kbd "C-l") 'my-clear)
 
+            (evil-define-key 'insert term-raw-map (kbd "C-o") (lambda () (interactive) (multi-term)))
             (evil-define-key 'insert term-raw-map (kbd "C-a") (lambda () (interactive) (term-send-raw-string "\C-a")))
             (evil-define-key 'insert term-raw-map (kbd "C-k") (lambda () (interactive) (term-send-raw-string "\C-k")))
 
