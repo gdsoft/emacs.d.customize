@@ -19,16 +19,25 @@
                               (shell-pop-out)
                             (shell-pop-up 1)))))
 
-;; shell の存在を確認
 (defun skt:shell ()
-  "Find shell."
-  (or (executable-find "bash")
-      (executable-find "fish")
-      (executable-find "zsh")
-      ;; (executable-find "f_zsh") ;; Emacs + Cygwin を利用する人は Zsh の代りにこれにしてください
-      ;; (executable-find "f_bash") ;; Emacs + Cygwin を利用する人は Bash の代りにこれにしてください
-      (executable-find "cmdproxy")
-      (error "Can't find 'shell' command in PATH!!")))
+  "Shellの存在を確認."
+  (let ((shell-name
+         (cond
+          ;; Mac OSX判定
+          ((eq system-type 'darwin) (or (executable-find "zsh") (executable-find "bash")))
+          ;; Linux判定
+          ((eq system-type 'gnu/linux) (executable-find "bash"))
+          ;; その他
+          (t
+           (or (executable-find "bash")
+               (executable-find "sh")
+               ;; (executable-find "fish")
+               ;; (executable-find "f_zsh") ;; Emacs + Cygwin を利用する人は Zsh の代りにこれにしてください
+               ;; (executable-find "f_bash") ;; Emacs + Cygwin を利用する人は Bash の代りにこれにしてください
+               (executable-find "cmdproxy"))))))
+
+    (if shell-name shell-name
+      (error "Can't find 'shell' command in PATH!!"))))
 
 ;; Shell 名の設定
 (custom-set-variables

@@ -46,6 +46,7 @@
         custom-tab
         custom-shell
         custom-language
+                                        ;       custom-rust
         ))
 (dolist (req require-list) (require req))
 

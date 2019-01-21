@@ -34,23 +34,23 @@
 
 ;; TODO ----
 ;; SBCL
-;(setq inferior-lisp-program "sbcl")
-;(load (expand-file-name "~/quicklisp/slime-helper.el"))
+                                        ;(setq inferior-lisp-program "sbcl")
+                                        ;(load (expand-file-name "~/quicklisp/slime-helper.el"))
 ;; TODO ----
 
 ;; --- C C++ ---
-(add-hook 'c-mode-hook      'company-mode)
-(add-hook 'c++-mode-hook    'company-mode)
+                                        ;(add-hook 'c-mode-hook      'company-mode)
+                                        ;(add-hook 'c++-mode-hook    'company-mode)
 ;; 缩进4个空格
-(setq c-basic-offset 4)
+                                        ;(setq c-basic-offset 4)
 ;; 没有这个 { } 就会瞎搞
-(setq c-default-style "linux")
+                                        ;(setq c-default-style "linux")
 
 ;; --- Javascript ---
 (require 'my-js)
 
 ;; --- Rust ---
-(require 'my-rust)
+                                        ;(require 'my-rust)
 
 ;; --- Python ---
                                         ;(add-hook 'python-mode-hook 'anaconda-mode)

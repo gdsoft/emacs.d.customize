@@ -1,4 +1,4 @@
-;;; my-rust.el --- Golang develop environment configure
+;;; custom-rust.el --- user customization file    -*- no-byte-compile: t -*-
 ;;; Commentary:
 
 ;;; Code:
@@ -31,7 +31,7 @@
    ;; Set path to racer binary
    (setq racer-cmd "/usr/local/bin/racer")
    ;; Set path to rust src directory
-   (setq racer-rust-src-path "/Users/guodong/.rust/src/")))
+   (setq racer-rust-src-path "/home/guodong/.rust/src/")))
 
  (t nil))
 
@@ -54,5 +54,5 @@
    ;; Key binding to auto complete and indent
    (local-set-key (kbd "TAB") #'racer-complete-or-indent)))
 
-(provide 'my-rust)
-;;; my-rust.el ends here
+(provide 'custom-rust)
+;;; custom-rust.el ends here
