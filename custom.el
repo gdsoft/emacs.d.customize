@@ -69,13 +69,6 @@
  '(multi-term-dedicated-select-after-open-p t)
  '(multi-term-dedicated-skip-other-window-p t)
  '(multi-term-program shell-file-name)
- '(safe-local-variable-values
-   (quote
-    ((eval setq flycheck-clang-include-path
-           (list
-            (expand-file-name "~/work/project/julius/plugin/")
-            (expand-file-name "~/work/project/julius/libsent/include/"))))))
- '(shell-file-name (skt:shell))
  '(system-uses-terminfo nil t))
 
 (custom-set-faces
