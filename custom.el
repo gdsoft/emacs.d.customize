@@ -77,7 +77,10 @@
  tab-width 2
  standard-indent 2
  ;; Tab改为插入空格
- indent-tabs-mode nil)
+ indent-tabs-mode nil
+ ;; cclsがflycheckを使わない
+ flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc)
+ )
 
 ;; 多行注释
 (defun my-comment-or-uncomment-region (beg end &optional arg)
