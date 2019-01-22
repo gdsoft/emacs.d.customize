@@ -59,33 +59,6 @@
 ;; Misc.
 ;; (setq confirm-kill-emacs 'y-or-n-p)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(explicit-shell-file-name shell-file-name)
- '(multi-term-dedicated-close-back-to-open-buffer-p t)
- '(multi-term-dedicated-select-after-open-p t)
- '(multi-term-dedicated-skip-other-window-p t)
- '(multi-term-program shell-file-name)
- '(system-uses-terminfo nil t))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(aw-leading-char-face ((t (:inherit (quote error) :bold t :height 1.2))))
- '(aw-mode-line-face ((t (:inherit (quote mode-line-emphasis) :bold t))))
- '(awesome-tab-selected ((t (:inherit awesome-tab-default :foreground "green3" :overline "yellow" :underline "yellow" :weight ultra-bold :width semi-expanded))))
- '(awesome-tab-separator ((t (:inherit awesome-tab-default :box (:line-width 2 :color "yellow" :style pressed-button) :height 0.1))))
- '(awesome-tab-unselected ((t (:inherit awesome-tab-default :foreground "cyan" :overline "yellow" :underline "yellow" :weight ultra-bold :width semi-expanded))))
- '(diff-hl-change ((t (:background "#46D9FF"))))
- '(diff-hl-delete ((t (:background "#ff6c6b"))))
- '(diff-hl-insert ((t (:background "#98be65"))))
- '(hl-todo ((t (:box t :bold t)))))
-
 ;; 缩进默认设置
 (setq-default
  ;; 缩进默认是2个空格
@@ -112,7 +85,6 @@
 (setq load-path-list
       '(
         "~/.emacs.d.customize/customs"
-        "~/.emacs.d.customize/language"
         "~/.emacs.d.customize/download"
         "~/.emacs.d.customize/download/common"
         "~/.emacs.d.customize/download/awesome"
@@ -123,5 +95,12 @@
           (lambda()
             (display-line-numbers-mode -1)
             (require 'custom-pair)))
+
+;; Load custom-file
+(setq custom-file
+      (expand-file-name
+       "custom-auto.el"
+       (file-name-directory (file-symlink-p load-file-name))))
+(load custom-file)
 
 ;;; custom.el ends here

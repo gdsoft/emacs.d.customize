@@ -19,47 +19,12 @@
                               (shell-pop-out)
                             (shell-pop-up 1)))))
 
-(defun skt:shell ()
-  "Shellの存在を確認."
-  (let (shell-name
-        ;; Mac または Linux
-        (if (or (eq system-type 'darwin) (eq system-type 'gnu/linux))
-            (or (executable-find "zsh") (executable-find "bash"))
-          ;; その他
-          (or (executable-find "bash")
-              (executable-find "sh")
-              ;; (executable-find "fish")
-              ;; (executable-find "f_zsh") ;; Emacs + Cygwin を利用する人は Zsh の代りにこれにしてください
-              ;; (executable-find "f_bash") ;; Emacs + Cygwin を利用する人は Bash の代りにこれにしてください
-              (executable-find "cmdproxy")))
-
-        (if shell-name shell-name
-          (error "Can't find 'shell' command in PATH!!")))))
-
-;; Shell 名の設定
-(custom-set-variables
- '(shell-file-name (skt:shell))
- '(explicit-shell-file-name shell-file-name)
-
- ;; Emacs が保持する terminfo を利用する
- '(system-uses-terminfo nil)
-
- '(multi-term-program shell-file-name)
-
- ;; t: skip dedicated window when using `other-window'.
- '(multi-term-dedicated-skip-other-window-p t)
-
- ;; focus dedicated window after open
- '(multi-term-dedicated-select-after-open-p t)
-
- '(multi-term-dedicated-close-back-to-open-buffer-p t))
-
-(setenv "SHELL" shell-file-name)
-
-;; for lsp-go
-;; replace backspace to ":"
-;;(let ((gopath (getenv "GOPATH")))
-;;  (setenv "GOPATH" (replace-regexp-in-string "[^a-zA-Z/_]+" ":" gopath)))
+(setq gd-utils-path (file-name-directory custom-file))
+(use-package gd-utils
+  :load-path gd-utils-path
+  :init
+  (require 'gd-utils)
+  (setenv "SHELL" (gd-util-search-shell)))
 
 (with-eval-after-load 'multi-term
   ;; "C-z"、"C-x"、"C-c"、"C-h"、"C-y"、"<ESC>" のキーが奪われなくなりますので、ほとんどの操作は Emacs 的にできるはずです。
