@@ -59,6 +59,18 @@
 ;; Misc.
 ;; (setq confirm-kill-emacs 'y-or-n-p)
 
+;; Load custom file
+(let* ((load-file-directory (file-name-directory (file-symlink-p load-file-name)))
+       (custom-auto-tmpl (expand-file-name "custom-auto.tmpl" load-file-directory)))
+
+  (setq custom-file (expand-file-name "custom-auto.el" load-file-directory))
+
+  (if (and (file-exists-p custom-auto-tmpl) (not (file-exists-p custom-file)))
+      (copy-file custom-auto-tmpl custom-file))
+
+  (if (file-exists-p custom-file)
+      (load custom-file)))
+
 ;; 缩进默认设置
 (setq-default
  ;; 缩进默认是2个空格
@@ -95,12 +107,5 @@
           (lambda()
             (display-line-numbers-mode -1)
             (require 'custom-pair)))
-
-;; Load custom-file
-(setq custom-file
-      (expand-file-name
-       "custom-auto.el"
-       (file-name-directory (file-symlink-p load-file-name))))
-(load custom-file)
 
 ;;; custom.el ends here
