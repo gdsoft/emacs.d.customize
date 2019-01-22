@@ -1,0 +1,26 @@
+;; Change <your-project-dir> to your project directory.
+
+((nil . ((eval . (progn
+                   (defvar headers '())
+
+                   (defun add-c-header (header-path)
+                     (if (not (member header-path headers))
+                         ;;   (setq headers (push header-path headers))
+                         (add-to-list 'headers header-path)))
+
+                   (defun recursive-access-dir (dir-path)
+                     (dolist (file (directory-files dir-path))
+                       (let ((file-full-path (expand-file-name file dir-path)))
+                         (if (file-directory-p file-full-path)
+                             (if (not (string-match "^[.].*" file))
+                                 (recursive-access-dir file-full-path)
+                               )
+                           (if (string-match ".*[.]h$" file)
+                               (add-c-header dir-path))
+                           )
+                         )
+                       ))
+
+                   (recursive-access-dir <your-project-dir>)
+
+                   (setq flycheck-clang-include-path headers))))))

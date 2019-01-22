@@ -79,6 +79,9 @@ npm install -g typescript
 
 ((nil . ((eval . (setq flycheck-clang-include-path
                        (list (expand-file-name "~/myproject/include/")))))))
+
+;; .dir-locals.el's template file
+;; copy dir-locals.tmpl to you project directory and rename to .dir-locals.el                       
 ```
 
 -------------------------------------------------------------------------------
