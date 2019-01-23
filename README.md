@@ -88,8 +88,7 @@ npm install -g typescript
 
 ## LSP ##
 
-### C/C++/Objective-C ###
-
+- C/C++/Objective-C
 ``` shell
 ;; install ccls
 ;; https://github.com/MaskRay/ccls
@@ -101,24 +100,14 @@ bear make
 ;; scan-build https://github.com/rizsotto/scan-build.git
 intercept-build make
 ```
-
-### Bash/Shell ###
-
-``` shell
-sudo yarn add global bash-language-server
-```
-
-### Golang ###
-
-``` shell
-go get -u github.com/sourcegraph/go-langserver
-```
-
-### Rust ###
-
-``` shell
-rustup component add rls-preview rust-analysis rust-src
-```
+- Golang `go get -u github.com/sourcegraph/go-langserver`
+- Rust `rustup component add rls-preview rust-analysis rust-src`
+- Python: `pip install python-language-server`
+- Ruby:  `gem install solargraph`
+- Javascript/Typescript: `sudo yarn add global javascript-typescript-langserver`
+- CSS: `sudo yarn add global vscode-css-languageserver-bin`
+- HTML: `sudo yarn add global vscode-html-languageserver-bin`
+- Bash/Shell `sudo yarn add global bash-language-server`
 
 -------------------------------------------------------------------------------
 
