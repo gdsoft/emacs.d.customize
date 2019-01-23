@@ -70,7 +70,7 @@ npm install -g typescript
 
 -------------------------------------------------------------------------------
 
-## Clang LSP CCLS ##
+## .dir-locals.el ##
 
 ``` emacs-lisp
 ;; For example:
@@ -82,6 +82,42 @@ npm install -g typescript
 
 ;; .dir-locals.el's template file
 ;; copy dir-locals.tmpl to you project directory and rename to .dir-locals.el                       
+```
+
+-------------------------------------------------------------------------------
+
+## LSP ##
+
+### C/C++/Objective-C ###
+
+``` shell
+;; install ccls
+;; https://github.com/MaskRay/ccls
+
+;; -- generates compile_commands.json and .ccls --
+;; Build EAR https://github.com/rizsotto/Bear.git
+bear make
+;; OR
+;; scan-build https://github.com/rizsotto/scan-build.git
+intercept-build make
+```
+
+### Bash/Shell ###
+
+``` shell
+sudo yarn add global bash-language-server
+```
+
+### Golang ###
+
+``` shell
+go get -u github.com/sourcegraph/go-langserver
+```
+
+### Rust ###
+
+``` shell
+rustup component add rls-preview rust-analysis rust-src
 ```
 
 -------------------------------------------------------------------------------
