@@ -56,5 +56,10 @@
 ;; --- Ruby ---
                                         ;(require 'my-rails)
 
+;; (defcustom lsp-go-executable-path (executable-find "go-langserver")
+;;   :type 'string
+;;   :group 'lsp-go
+;;   )
+
 (provide 'custom-language)
 ;;; custom-language.el ends here

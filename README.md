@@ -46,7 +46,8 @@ go get -u -v github.com/mdempsky/gocode # or github.com/nsf/gocode
 gocode set autobuild true
 
 # bingo
-git clone https://github.com/saibing/bingo.git
+cd ~/Downloads
+[[ ! -e bingo ]] && git clone https://github.com/saibing/bingo.git
 cd bingo
 GO111MODULE=on go install
 
