@@ -104,6 +104,7 @@
 
             (evil-define-key 'insert term-raw-map (kbd "C-o") (lambda () (interactive) (multi-term)))
             (evil-define-key 'insert term-raw-map (kbd "C-a") (lambda () (interactive) (term-send-raw-string "\C-a")))
+            (evil-define-key 'insert term-raw-map (kbd "C-e") (lambda () (interactive) (term-send-raw-string "\C-e")))
             (evil-define-key 'insert term-raw-map (kbd "C-k") (lambda () (interactive) (term-send-raw-string "\C-k")))
 
             (define-key term-raw-map (kbd "M-d") (lambda () (interactive) (term-send-raw-string "\ed")))

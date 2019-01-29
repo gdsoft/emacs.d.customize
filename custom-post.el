@@ -20,8 +20,20 @@
   (evil-define-key 'normal treemacs-mode-map (kbd "+") 'treemacs-create-dir))
 
 ;; Evil
-(use-package evil :ensure t)
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil))
 (evil-mode t)
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (with-eval-after-load 'edebug (evil-collection-init 'edebug))
+  (with-eval-after-load 'ibuffer (evil-collection-init 'ibuffer))
+  (with-eval-after-load 'imenu-list (evil-collection-init 'imenu-list)))
 
 (use-package evil-magit
   :ensure t
@@ -40,7 +52,6 @@
 
 (let ((require-list '(
                       install-elisp
-                                        ;                      custom-edebug
                       custom-encoding
                       custom-tab
                       custom-shell
