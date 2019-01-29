@@ -111,4 +111,6 @@
             (display-line-numbers-mode -1)
             (require 'custom-pair)))
 
+(setq lsp-print-io t)
+
 ;;; custom.el ends here
