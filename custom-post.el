@@ -38,17 +38,16 @@
 (with-eval-after-load 'magit
   (require 'evil-magit))
 
-(defvar require-list)
-(setq require-list
-      '(
-        install-elisp
-        custom-encoding
-        custom-tab
-        custom-shell
-        custom-language
+(let ((require-list '(
+                      install-elisp
+                                        ;                      custom-edebug
+                      custom-encoding
+                      custom-tab
+                      custom-shell
+                      custom-language
                                         ;       custom-rust
-        custom-rails
-        ))
-(dolist (req require-list) (require req))
+                      custom-rails
+                      )))
+  (dolist (req require-list) (require req)))
 
 ;;; custom-post.el ends here
