@@ -38,6 +38,7 @@ go get -u -v github.com/jstemmer/gotags
 go get -u -v github.com/josharian/impl
 go get -u -v github.com/rogpeppe/godef
 go get -u -v github.com/golang/dep/cmd/dep
+go get -u -v github.com/swaggo/swag/cmd/swag
 go get -u -v github.com/sourcegraph/go-langserver
 go get -u -v github.com/golang/lint/golint
 go get -u -v github.com/justjanne/powerline-go
