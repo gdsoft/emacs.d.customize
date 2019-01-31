@@ -96,15 +96,19 @@
 ;; （Y or N）
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(defvar load-path-list)
-(setq load-path-list
-      '(
-        "~/.emacs.d.customize/customs"
-        "~/.emacs.d.customize/download"
-        "~/.emacs.d.customize/download/common"
-        "~/.emacs.d.customize/download/awesome"
-        ))
-(setq load-path (append load-path load-path-list))
+(let* ((libvterm-dir "~/.emacs.d.customize/emacs-libvterm")
+       (load-path-list
+        `(
+          ,libvterm-dir
+          "~/.emacs.d.customize/customs"
+          "~/.emacs.d.customize/download"
+          "~/.emacs.d.customize/download/common"
+          "~/.emacs.d.customize/download/awesome"
+          )))
+  (setq load-path (append load-path load-path-list))
+  (if (file-directory-p libvterm-dir)
+      (let (vterm-install)
+        (require 'vterm))))
 
 (add-hook 'prog-mode-hook
           (lambda()

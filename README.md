@@ -8,13 +8,25 @@
 ```
 git clone https://github.com/guodongsoft/emacs.d.customize.git ~/.emacs.d.customize
 ```
--------------------------------------------------------------------------------
 
 ### Create custom link file ###
 ```
 rm  ~/.emacs.d/custom.el
 ln -s  ~/.emacs.d.customize/custom.el ~/.emacs.d/custom.el
 ln -s  ~/.emacs.d.customize/custom-post.el ~/.emacs.d/custom-post.el
+```
+
+### emacs-libvterm ###
+
+``` shell
+cd  ~/.emacs.d.customize
+git clone https://github.com/akermu/emacs-libvterm.git
+
+cd emacs-libvterm
+mkdir build
+cd build
+cmake ..
+make
 ```
 
 -------------------------------------------------------------------------------
@@ -148,6 +160,8 @@ apt-get install silversearcher-ag
 brew install the_silver_searcher
 ```
 
+-------------------------------------------------------------------------------
+
 ## Error ##
 
 - If show under error message
@@ -160,7 +174,6 @@ sudo apt-get install aspell-en
 # Arch
 sudo yay -S aspell-en
 ```
-
 -------------------------------------------------------------------------------
 
 ## Quicklisp ##
