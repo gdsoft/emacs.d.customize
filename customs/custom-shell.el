@@ -38,18 +38,16 @@
             (define-key vterm-mode-map (kbd "M-c") #'vterm-send-ctrl-c)
             (evil-define-key 'motion vterm-mode-map (kbd "C-o") (lambda () (interactive) (vterm)))
 
-            ;; (dolist (key-pair '(("C-a" . "\C-a") ("C-e" . "\C-e") ("C-k" . "\C-k") ("C-u" . "\C-u")))
-            ;;   (evil-define-key 'insert vterm-mode-map (kbd (car key-pair))
-            ;;     `(lambda () (interactive) (vterm-send-string (cdr ',key-pair)))))
+            ;; (dolist (c '("a" "e" "k" "u"))
+            ;;   (let ((key (kbd (concat "C-" c))))
+            ;;     (evil-define-key 'insert vterm-mode-map key
+            ;;       `(lambda () (interactive) (vterm-send-string ,key)))))
 
-            ;; (let ((key-pair '('C-a '\C-a)))
-            ;;   (evil-define-key 'insert vterm-mode-map (kbd (car key-pair))
-            ;;     `(lambda () (interactive) (vterm-send-string (cadr ',key-pair)))))
-
-            (dolist (key '("a" "e" "k" "u"))
-              (let ((key-pair (kbd (concat "C-" key))))
-                (evil-define-key 'insert vterm-mode-map key-pair
-                  `(lambda () (interactive) (vterm-send-string ,key-pair)))))
+            (mapcar (lambda (c)
+                      (let ((key (kbd (concat "C-" c))))
+                        (evil-define-key 'insert vterm-mode-map key
+                          `(lambda () (interactive) (vterm-send-string ,key)))))
+                    '("a" "e" "k" "u"))
 
             (dolist (key '("M-j" "M-k"))
               (define-key vterm-mode-map (kbd key) nil))
@@ -58,10 +56,10 @@
               (define-key vterm-mode-map `,key nil))
 
             ;; (dotimes (n 12)
-            ;;   (let ((key (kbd (concat "f" (int-to-string (1+ n))))))
-            ;;     (define-key vterm-mode-map `,key nil)))
+            ;;    (let ((key (kbd (concat "f" (int-to-string (1+ n))))))
+            ;;      (define-key vterm-mode-map [`,key] nil)))
             ))
+(kbd (concat "C-" c))
 
-(concat "[f" (int-to-string (1+ 1))  "]")
 (provide 'custom-shell)
 ;;; custom-shell.el ends here
