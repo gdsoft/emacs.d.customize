@@ -30,7 +30,7 @@
       (require 'vterm))
 
     (custom-set-faces
-     '(vterm-color-magenta-bg ((t (:background "black" )))))
+     '(vterm-color-default-fg ((t (:background "green" :foreground "red")))))
 
     (use-package shell-pop
       :init
@@ -67,7 +67,9 @@
 
             ;; keybind
             (define-key vterm-mode-map (kbd "M-c") #'vterm-send-ctrl-c)
-            (evil-define-key 'motion vterm-mode-map (kbd "C-o") (lambda () (interactive) (vterm)))
+
+            (dolist (state '(insert motion))
+              (evil-define-key state vterm-mode-map (kbd "C-o") (lambda () (interactive) (vterm))))
 
             (dolist (c '("a" "e" "k" "u"))
               (let ((key (kbd (concat "C-" c))))
