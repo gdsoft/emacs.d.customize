@@ -38,19 +38,28 @@
             (define-key vterm-mode-map (kbd "M-c") #'vterm-send-ctrl-c)
             (evil-define-key 'motion vterm-mode-map (kbd "C-o") (lambda () (interactive) (vterm)))
 
-            (dolist (key-pair '(("C-a" . "\C-a") ("C-e" . "\C-e") ("C-k" . "\C-k") ("C-u" . "\C-u")))
-              (evil-define-key 'insert vterm-mode-map (kbd (car key-pair))
-                `(lambda () (interactive) (vterm-send-string (cdr ',key-pair)))))
+            ;; (dolist (key-pair '(("C-a" . "\C-a") ("C-e" . "\C-e") ("C-k" . "\C-k") ("C-u" . "\C-u")))
+            ;;   (evil-define-key 'insert vterm-mode-map (kbd (car key-pair))
+            ;;     `(lambda () (interactive) (vterm-send-string (cdr ',key-pair)))))
+
+            ;; (let ((key-pair '('C-a '\C-a)))
+            ;;   (evil-define-key 'insert vterm-mode-map (kbd (car key-pair))
+            ;;     `(lambda () (interactive) (vterm-send-string (cadr ',key-pair)))))
+
+            (dolist (key '("a" "e" "k" "u"))
+              (let ((key-pair (kbd (concat "C-" key))))
+                (evil-define-key 'insert vterm-mode-map key-pair
+                  `(lambda () (interactive) (vterm-send-string ,key-pair)))))
 
             (dolist (key '("M-j" "M-k"))
               (define-key vterm-mode-map (kbd key) nil))
 
-            ;; (dolist (key '([f1] [f2] [f3] [f4] [f5] [f6] [f7] [f8] [f9] [f10] [f11] [f12]))
-            ;;   (define-key vterm-mode-map `,key nil))
+            (dolist (key '([f1] [f2] [f3] [f4] [f5] [f6] [f7] [f8] [f9] [f10] [f11] [f12]))
+              (define-key vterm-mode-map `,key nil))
 
-            (dotimes (n 12)
-              (let ((key (concat "[f" (int-to-string (1+ n)) "]")))
-                (define-key vterm-mode-map `,key nil)))
+            ;; (dotimes (n 12)
+            ;;   (let ((key (kbd (concat "f" (int-to-string (1+ n))))))
+            ;;     (define-key vterm-mode-map `,key nil)))
             ))
 
 (concat "[f" (int-to-string (1+ 1))  "]")
