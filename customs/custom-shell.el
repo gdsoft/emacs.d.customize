@@ -1,4 +1,4 @@
-;;; custom-shell.el --- user customization file    -*- no-byte-compile: t -*-
+;;; custom-shell.el --- user customization file    -*- no-byte-compile: t -*- -*- lexical-binding: t -*-
 ;;; Commentary:
 
 ;; Set the `:foreground` and `:background` attributes of the following faces to a
@@ -71,9 +71,16 @@
             (dolist (state '(insert motion))
               (evil-define-key state vterm-mode-map (kbd "C-o") (lambda () (interactive) (vterm))))
 
-            (dolist (c '("a" "e" "k" "u"))
-              (let ((key (kbd (concat "C-" c))))
-                (evil-define-key 'insert vterm-mode-map key `(lambda () (interactive) (vterm-send-string ,key)))))
+            ;; (dolist (c '("a" "e" "k" "u"))
+            ;;   (let ((key (kbd (concat "C-" c))))
+            ;;     (evil-define-key 'insert vterm-mode-map key `(lambda () (interactive) (vterm-send-string ,key)))))
+
+            (mapc (lambda (x)
+                    (--> x
+                         (concat "C-" it)
+                         (kbd it)
+                         (evil-define-key 'insert vterm-mode-map it `(lambda () (interactive) (vterm-send-string ,it)))))
+                  '("a" "e" "k" "u"))
 
             (dolist (key '("M-j" "M-k"))
               (define-key vterm-mode-map (kbd key) nil))
