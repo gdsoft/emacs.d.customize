@@ -55,7 +55,6 @@
                       custom-encoding
                       custom-tab
                       custom-shell
-                      custom-language
                                         ;       custom-rust
                       custom-rails
                       )))

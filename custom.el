@@ -98,10 +98,15 @@
 
 (let ((load-path-list
        '("~/.emacs.d.customize/customs"
+         "~/.emacs.d.customize/sly"
          "~/.emacs.d.customize/download"
          "~/.emacs.d.customize/download/common"
          "~/.emacs.d.customize/download/awesome")))
   (nconc load-path load-path-list))
+
+;; Sly
+(require 'sly-autoloads)
+(setq inferior-lisp-program "/usr/bin/sbcl")
 
 (add-hook 'prog-mode-hook
           (lambda()

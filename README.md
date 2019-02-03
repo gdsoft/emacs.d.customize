@@ -20,13 +20,26 @@ ln -s  ~/.emacs.d.customize/custom-post.el ~/.emacs.d/custom-post.el
 
 ``` shell
 cd  ~/.emacs.d.customize
-git clone https://github.com/akermu/emacs-libvterm.git
+git clone --depth=1 https://github.com/akermu/emacs-libvterm.git
 
 cd emacs-libvterm
 mkdir build
 cd build
 cmake ..
 make
+```
+
+### sly ###
+
+``` shell
+cd  ~/.emacs.d.customize
+git clone --depth=1 https://github.com/joaotavora/sly.git
+cd sly
+make compile compile-contrib
+
+#(add-to-list 'load-path "~/dir/to/cloned/sly")
+#(require 'sly-autoloads)
+#(setq inferior-lisp-program "/opt/sbcl/bin/sbcl")
 ```
 
 -------------------------------------------------------------------------------

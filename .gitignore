@@ -1,4 +1,11 @@
 *.bak
 test
+
 custom-auto.el
+
+node_modules
+package.json
+yarn*
+
+sly
 emacs-libvterm
