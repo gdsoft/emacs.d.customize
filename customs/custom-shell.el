@@ -29,9 +29,6 @@
     (let (vterm-install)
       (require 'vterm))
 
-    (custom-set-faces
-     '(vterm-color-default-fg ((t (:background "green" :foreground "red")))))
-
     (use-package shell-pop
       :init
       (let ((shell-type
