@@ -31,9 +31,11 @@
   :after evil
   :ensure t
   :config
-  (with-eval-after-load 'edebug (evil-collection-init 'edebug))
   (with-eval-after-load 'ibuffer (evil-collection-init 'ibuffer))
   (with-eval-after-load 'imenu-list (evil-collection-init 'imenu-list)))
+
+(evil-set-initial-state 'edebug-mode 'normal)
+(add-hook 'edebug-mode-hook #'evil-normalize-keymaps)
 
 (use-package evil-magit
   :ensure t
