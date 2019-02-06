@@ -11,10 +11,12 @@
 (dolist (hook '(prog-mode-hook text-mode-hook treemacs-mode-hook))
   (add-hook hook #'display-line-numbers-mode))
 
-(add-hook 'prog-mode-hook
-          (lambda()
-            ;; Sly
-            (require 'sly-autoloads)))
+;; gofmt whitespace => tab
+(add-hook 'go-mode-hook
+          (lambda ()
+            (setq whitespace-style '(face empty trailing lines-tail))
+            (setq tab-width 4)
+            (setq indent-tabs-mode t)))
 
 (let ((require-list '(
                       install-elisp
