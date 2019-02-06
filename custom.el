@@ -80,6 +80,13 @@
  indent-tabs-mode nil
  ;; cclsがflycheckを使わない
  flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc)
+
+ lsp-print-io t
+
+ display-line-numbers-width-start t
+
+ ;; SBCL
+ inferior-lisp-program "/usr/bin/sbcl"
  )
 
 ;; 多行注释
@@ -103,16 +110,5 @@
          "~/.emacs.d.customize/download/common"
          "~/.emacs.d.customize/download/awesome")))
   (nconc load-path load-path-list))
-
-;; Sly
-(require 'sly-autoloads)
-(setq inferior-lisp-program "/usr/bin/sbcl")
-
-(add-hook 'prog-mode-hook
-          (lambda()
-            (display-line-numbers-mode -1)
-            (require 'custom-pair)))
-
-(setq lsp-print-io t)
 
 ;;; custom.el ends here

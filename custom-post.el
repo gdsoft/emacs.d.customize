@@ -8,9 +8,7 @@
 (global-set-key [f7] 'projectile-ag)
 
 ;; 显示行号
-(use-package linum :ensure t)
-(global-linum-mode t)
-(set-face-foreground 'linum "orange")
+(add-to-list 'auto-mode-alist '("\\.\\(md\\|org\\)\\'" . display-line-numbers-mode))
 
 ;; Treemacs
 (with-eval-after-load 'treemacs
@@ -32,7 +30,7 @@
   :ensure t
   :config
   (with-eval-after-load 'ibuffer (evil-collection-init 'ibuffer))
-  (with-eval-after-load 'imenu-list (evil-collection-init 'imenu-list)))
+  (evil-collection-init 'dired))
 
 (evil-set-initial-state 'edebug-mode 'normal)
 (add-hook 'edebug-mode-hook #'evil-normalize-keymaps)
@@ -52,12 +50,18 @@
 (with-eval-after-load 'magit
   (require 'evil-magit))
 
+(add-hook 'prog-mode-hook
+          (lambda()
+            ;; Sly
+            (require 'sly-autoloads)))
+
 (let ((require-list '(
                       install-elisp
                       custom-encoding
                       custom-tab
                       custom-shell
                                         ;       custom-rust
+                      custom-pair
                       custom-rails
                       )))
   (dolist (req require-list) (require req)))
