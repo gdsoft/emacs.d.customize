@@ -28,5 +28,15 @@
                (not (file-name-extension name))))
      )))
 
+(setq awesome-tab-buffer-groups-function #'custom-tab-buffer-groups)
+
+(defun custom-tab-buffer-groups ()
+  "`custom-tab-buffer-groups' control buffers' group rules.
+
+Group custom-tab with mode if buffer is derived from `vterm-mode'.
+Other buffer group by `awesome-tab-buffer-groups' rules."
+  (if (derived-mode-p 'vterm-mode) '("VTerm")
+    (awesome-tab-buffer-groups)))
+
 (provide 'custom-tab)
 ;;; custom-tab.el ends here
