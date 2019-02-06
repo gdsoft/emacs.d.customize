@@ -7,9 +7,6 @@
 ;; 使用f7键打开内容搜索
 (global-set-key [f7] 'projectile-ag)
 
-;; 显示行号
-(add-to-list 'auto-mode-alist '("\\.\\(md\\|org\\)\\'" . display-line-numbers-mode))
-
 ;; Treemacs
 (with-eval-after-load 'treemacs
   (treemacs-reset-icons) ; Treemacs custom icons
@@ -49,6 +46,10 @@
 
 (with-eval-after-load 'magit
   (require 'evil-magit))
+
+;; 显示行号
+(dolist (hook '(prog-mode-hook text-mode-hook treemacs-mode-hook))
+  (add-hook hook #'display-line-numbers-mode))
 
 (add-hook 'prog-mode-hook
           (lambda()
