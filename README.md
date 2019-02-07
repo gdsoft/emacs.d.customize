@@ -136,14 +136,46 @@ bear make
 ;; scan-build https://github.com/rizsotto/scan-build.git
 intercept-build make
 ```
-- Golang `go get -u github.com/sourcegraph/go-langserver`
-- Rust `rustup component add rls-preview rust-analysis rust-src`
-- Python: `pip install python-language-server`
-- Ruby:  `gem install solargraph`
-- Javascript/Typescript: `sudo yarn add global javascript-typescript-langserver`
-- CSS: `sudo yarn add global vscode-css-languageserver-bin`
-- HTML: `sudo yarn add global vscode-html-languageserver-bin`
-- Bash/Shell `sudo yarn add global bash-language-server`
+
+- Golang
+``` shell
+go get -u github.com/sourcegraph/go-langserver
+```
+
+- Rust
+``` shell
+rustup component add rls-preview rust-analysis rust-src
+```
+
+- Python
+``` shell
+pip install python-language-server
+```
+
+- Ruby
+``` shell
+gem install solargraph
+```
+
+- Javascript/Typescript
+``` shell
+sudo yarn add global javascript-typescript-langserver
+```
+
+- CSS
+``` shell
+sudo yarn add global vscode-css-languageserver-bin
+```
+
+- HTML
+``` shell
+sudo yarn add global vscode-html-languageserver-bin
+```
+
+- Bash/Shell
+``` shell
+sudo yarn add global bash-language-server
+```
 
 -------------------------------------------------------------------------------
 
