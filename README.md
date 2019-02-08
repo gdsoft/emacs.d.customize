@@ -71,18 +71,16 @@ go get -u -v github.com/cweill/gotests/...
 go get -u -v github.com/mdempsky/gocode # or github.com/nsf/gocode
 gocode set autobuild true
 
-# bingo
-cd ~/Downloads
-[[ ! -e bingo ]] && git clone https://github.com/saibing/bingo.git
-cd bingo
-GO111MODULE=on go install
-
 # ghq
 go get -u -v github.com/motemen/ghq
 # ghqのルートを${GOPATH}/srcにする
 git config --global ghq.root "${GOPATH}/src"
 # リポジトリclone
-ghq get .../xxx.git
+#ghq get .../xxx.git
+
+# bingo (Download from github.com/saibing/bingo)
+ghq look bingo
+GO111MODULE=on go install
 ```
 
 -------------------------------------------------------------------------------
