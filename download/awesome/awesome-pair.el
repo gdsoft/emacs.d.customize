@@ -6,8 +6,8 @@
 ;; Maintainer: Andy Stewart <lazycat.manatee@gmail.com>
 ;; Copyright (C) 2018, Andy Stewart, all rights reserved.
 ;; Created: 2018-11-11 09:27:58
-;; Version: 0.9
-;; Last-Updated: 2019-01-30 07:40:22
+;; Version: 1.2
+;; Last-Updated: 2019-02-09 02:27:40
 ;;           By: Andy Stewart
 ;; URL: http://www.emacswiki.org/emacs/download/awesome-pair.el
 ;; Keywords:
@@ -69,6 +69,13 @@
 ;;
 
 ;;; Change log:
+;;
+;; 2019/02/09
+;;      * Insert ) directly in sh-mode for case ... in syntax.
+;;
+;; 2019/02/07
+;;      * Don't insert \ before " if cursor at comment area.
+;;      * Fix `integer-or-marker-p' error when run `awesome-pair-*-delete-in-string' functions in Python language.
 ;;
 ;; 2019/01/30
 ;;      * Fix 'wrong type character-p' error when call `awesome-pair-forward-delete' in beginning of buffer.
@@ -194,6 +201,9 @@
   (cond ((or (awesome-pair-in-string-p)
              (awesome-pair-in-comment-p))
          (insert ")"))
+        ;; Insert ) directly in sh-mode for case ... in syntax.
+        ((derived-mode-p 'sh-mode)
+         (insert ")"))
         (t
          (let ((close (awesome-pair-missing-close)))
            (if close
@@ -230,9 +240,10 @@
 
 (defun awesome-pair-double-quote ()
   (interactive)
-  (cond ((or (awesome-pair-in-string-p)
-             (awesome-pair-in-comment-p))
+  (cond ((awesome-pair-in-string-p)
          (insert "\\\""))
+        ((awesome-pair-in-comment-p)
+         (insert "\""))
         (t
          (insert "\"\"")
          (backward-char))
@@ -583,27 +594,67 @@ If current mode is `web-mode', use `awesome-pair-web-mode-kill' instead `awesome
 
 (defun awesome-pair-backward-delete-in-string ()
   (let ((start+end (awesome-pair-string-start+end-points)))
-    (cond ((not (eq (1- (point)) (car start+end)))
-           (if (awesome-pair-in-string-escape-p)
-               (delete-char 1))
-           (backward-delete-char 1)
-           (if (awesome-pair-in-string-escape-p)
-               (backward-delete-char 1)))
-          ((eq (point) (cdr start+end))
-           (backward-delete-char 1)
-           (delete-char 1)))))
+    (cond
+     ;; Some language, such as Python, `awesome-pair-string-start+end-points' will return nil cause by `beginning-of-defun' retun nil.
+     ;; This logical branch is handle this.
+     ((not start+end)
+      ;; First determine if it is in the string area?
+      (when (awesome-pair-in-string-p)
+        (let ((syn-before (char-syntax (char-before)))
+              (syn-after  (char-syntax (char-after))))
+          (cond
+           ;; Remove double quotes when the string is empty
+           ((and (eq syn-before ?\" )
+                 (eq syn-after  ?\" ))
+            (backward-delete-char 1)
+            (delete-char 1))
+           ;; If there is still content in the string and the double quotation marks are in front of the cursor,
+           ;; no delete operation is performed.
+           ((eq syn-before ?\" ))
+           ;; If the cursor is not double quotes before and after, delete the previous character.
+           (t
+            (backward-delete-char 1))))))
+     ((not (eq (1- (point)) (car start+end)))
+      (if (awesome-pair-in-string-escape-p)
+          (delete-char 1))
+      (backward-delete-char 1)
+      (if (awesome-pair-in-string-escape-p)
+          (backward-delete-char 1)))
+     ((eq (point) (cdr start+end))
+      (backward-delete-char 1)
+      (delete-char 1)))))
 
 (defun awesome-pair-forward-delete-in-string ()
   (let ((start+end (awesome-pair-string-start+end-points)))
-    (cond ((not (eq (point) (cdr start+end)))
-           (cond ((awesome-pair-in-string-escape-p)
-                  (delete-char -1))
-                 ((eq (char-after) ?\\ )
-                  (delete-char +1)))
-           (delete-char +1))
-          ((eq (1- (point)) (car start+end))
-           (delete-char -1)
-           (delete-char +1)))))
+    (cond
+     ;; Some language, such as Python, `awesome-pair-string-start+end-points' will return nil cause by `beginning-of-defun' retun nil.
+     ;; This logical branch is handle this.
+     ((not start+end)
+      ;; First determine if it is in the string area?
+      (when (awesome-pair-in-string-p)
+        (let ((syn-before (char-syntax (char-before)))
+              (syn-after  (char-syntax (char-after))))
+          (cond
+           ;; Remove double quotes when the string is empty
+           ((and (eq syn-before ?\" )
+                 (eq syn-after  ?\" ))
+            (backward-delete-char 1)
+            (delete-char 1))
+           ;; If there is still content in the string and the double quotation marks are after of the cursor,
+           ;; no delete operation is performed.
+           ((eq syn-after ?\" ))
+           ;; If the cursor is not double quotes before and after, delete the previous character.
+           (t
+            (delete-char 1))))))
+     ((not (eq (point) (cdr start+end)))
+      (cond ((awesome-pair-in-string-escape-p)
+             (delete-char -1))
+            ((eq (char-after) ?\\ )
+             (delete-char +1)))
+      (delete-char +1))
+     ((eq (1- (point)) (car start+end))
+      (delete-char -1)
+      (delete-char +1)))))
 
 (defun awesome-pair-splice-string (argument)
   (let ((original-point (point))
@@ -918,11 +969,12 @@ If current line is not blank, do `awesome-pair-kill' first, re-indent line if re
     (parse-partial-sexp (point) point)))
 
 (defun awesome-pair-string-start+end-points (&optional state)
-  (save-excursion
-    (let ((start (nth 8 (or state (awesome-pair-current-parse-state)))))
-      (goto-char start)
-      (forward-sexp 1)
-      (cons start (1- (point))))))
+  (ignore-errors
+    (save-excursion
+      (let ((start (nth 8 (or state (awesome-pair-current-parse-state)))))
+        (goto-char start)
+        (forward-sexp 1)
+        (cons start (1- (point)))))))
 
 (defun awesome-pair-after-open-pair-p ()
   (save-excursion
