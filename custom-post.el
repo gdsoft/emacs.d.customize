@@ -24,8 +24,9 @@
                       custom-encoding
                       custom-tab
                       custom-shell
-                                        ;       custom-rust
-                      custom-pair
+                                        ; custom-rust
+                                        ; custom-pair
+                      custom-edit
                       custom-rails
                       )))
   (dolist (req require-list) (require req)))
