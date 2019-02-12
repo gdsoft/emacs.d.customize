@@ -116,6 +116,14 @@
       (or (and special-open (funcall special-open))
           (pair-insert start-ins end-ins))))
 
+(defun gd-emedit-close (end-ins &rest args)
+  (or (apply 'direct-insert end-ins args)
+      (let ((close (gd-emedit-missing-close)))
+        (if close
+            (if (eq (string-to-char end-ins) (matching-paren close))  ;; TODO
+                (insert end-ins))
+          (up-list)))))
+
 ;;;;;;;;;;;;;;;;; Interactive functions ;;;;;;;;;;;;;;;;;;;;;;
 
 (defun gd-emedit-open-round ()
@@ -135,53 +143,75 @@
 
 (defun gd-emedit-close-round ()
   (interactive)
-
-
   (letf ((sh-mode-p (lambda () (derived-mode-p 'sh-mode))))
-    (direct-insert ")" sh-mode-p)
+    ;; Insert ) directly in sh-mode for case ... in syntax.
+    (gd-emedit-close ")" sh-mode-p)))
 
-    ))
+;; (or (direct-insert ")" sh-mode-p)
+;;     (let ((close (gd-emedit-missing-close)))
+;;       (if close
+;;           (if (eq ?\) (matching-paren close))
+;;               (insert ")"))
+;;         (up-list))))))
 
-
-  ;; (cond ((or (gd-emedit-in-string-p)
-  ;;            (gd-emedit-in-comment-p))
-  ;;        (insert ")"))
-  ;;       ;; Insert ) directly in sh-mode for case ... in syntax.
-  ;;       ((derived-mode-p 'sh-mode)
-  ;;        (insert ")"))
-  ;;       (t
-  ;;        (let ((close (gd-emedit-missing-close)))
-  ;;          (if close
-  ;;              (if (eq ?\) (matching-paren close))
-  ;;                  (insert ")"))
-  ;;            (up-list))
-  ;;          ))))
+;; (cond ((or (gd-emedit-in-string-p)
+;;            (gd-emedit-in-comment-p))
+;;        (insert ")"))
+;;       ;; Insert ) directly in sh-mode for case ... in syntax.
+;;       ((derived-mode-p 'sh-mode)
+;;        (insert ")"))
+;;       (t
+;;        (let ((close (gd-emedit-missing-close)))
+;;          (if close
+;;              (if (eq ?\) (matching-paren close))
+;;                  (insert ")"))
+;;            (up-list))
+;;          ))))
 
 (defun gd-emedit-close-curly ()
   (interactive)
-  (cond ((or (gd-emedit-in-string-p)
-             (gd-emedit-in-comment-p))
-         (insert "}"))
-        (t
-         (let ((close (gd-emedit-missing-close)))
-           (if close
-               (if (eq ?\} (matching-paren close))
-                   (insert "}"))
-             (up-list))
-           ))))
+  (gd-emedit-close "}"))
+
+;; (or (direct-insert "}")
+;;     (let ((close (gd-emedit-missing-close)))
+;;       (if close
+;;           (if (eq ?\} (matching-paren close))
+;;               (insert "}"))
+;;         (up-list)))))
+
+;; (cond ((or (gd-emedit-in-string-p)
+;;            (gd-emedit-in-comment-p))
+;;        (insert "}"))
+;;       (t
+;;        (let ((close (gd-emedit-missing-close)))
+;;          (if close
+;;              (if (eq ?\} (matching-paren close))
+;;                  (insert "}"))
+;;            (up-list))
+;;          ))))
 
 (defun gd-emedit-close-bracket ()
   (interactive)
-  (cond ((or (gd-emedit-in-string-p)
-             (gd-emedit-in-comment-p))
-         (insert "]"))
-        (t
-         (let ((close (gd-emedit-missing-close)))
-           (if close
-               (if (eq ?\] (matching-paren close))
-                   (insert "]"))
-             (up-list))
-           ))))
+  (gd-emedit-close "]"))
+
+;; (or (direct-insert "]")
+;;     (let ((close (gd-emedit-missing-close)))
+;;       (if close
+;;           (if (eq ?\] (matching-paren close))
+;;               (insert "]"))
+;;         (up-list)))))
+
+
+;; (cond ((or (gd-emedit-in-string-p)
+;;            (gd-emedit-in-comment-p))
+;;        (insert "]"))
+;;       (t
+;;        (let ((close (gd-emedit-missing-close)))
+;;          (if close
+;;              (if (eq ?\] (matching-paren close))
+;;                  (insert "]"))
+;;            (up-list))
+;;          ))))
 
 (defun gd-emedit-double-quote ()
   (interactive)
