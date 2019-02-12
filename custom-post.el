@@ -25,7 +25,7 @@
                       custom-tab
                       custom-shell
                                         ; custom-rust
-                                        ; custom-pair
+                                        ;                     custom-pair
                       custom-edit
                       custom-rails
                       )))

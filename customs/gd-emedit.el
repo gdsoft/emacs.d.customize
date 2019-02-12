@@ -92,13 +92,13 @@
         t)))
 
 (defun direct-insert (ins &rest args)
-  (defvar conds '(gd-emedit-in-string-p gd-emedit-in-comment-p))
-  (nconc conds args)
+  (defvar direct-p-list '(gd-emedit-in-string-p gd-emedit-in-comment-p))
+  (nconc direct-p-list args)
 
   (defvar result nil)
   (catch 'break
-    (dolist (cond conds)
-      (when (funcall cond)
+    (dolist (direct-p direct-p-list)
+      (when (funcall direct-p)
         (insert ins)
         (setq result t)
         (throw 'break result))))
@@ -113,7 +113,7 @@
 (defun gd-emedit-open (start-ins end-ins &optional special-open)
   (or (region-round start-ins end-ins)
       (direct-insert start-ins)
-      (or (if special-open (funcall special-open))
+      (or (and special-open (funcall special-open))
           (pair-insert start-ins end-ins))))
 
 ;;;;;;;;;;;;;;;;; Interactive functions ;;;;;;;;;;;;;;;;;;;;;;
@@ -124,10 +124,10 @@
 
 (defun gd-emedit-open-curly ()
   (interactive)
-  (gd-emedit-open "{" "}"
-                  (lambda ()
-                    (if (derived-mode-p 'ruby-mode)
-                        (pair-insert "{ " " }")))))
+  (letf ((specal-open (lambda ()
+                        (if (derived-mode-p 'ruby-mode)
+                            (pair-insert "{ " " }")))))
+    (gd-emedit-open "{" "}" specal-open)))
 
 (defun gd-emedit-open-bracket ()
   (interactive)
@@ -137,19 +137,25 @@
   (interactive)
 
 
-  (cond ((or (gd-emedit-in-string-p)
-             (gd-emedit-in-comment-p))
-         (insert ")"))
-        ;; Insert ) directly in sh-mode for case ... in syntax.
-        ((derived-mode-p 'sh-mode)
-         (insert ")"))
-        (t
-         (let ((close (gd-emedit-missing-close)))
-           (if close
-               (if (eq ?\) (matching-paren close))
-                   (insert ")"))
-             (up-list))
-           ))))
+  (letf ((sh-mode-p (lambda () (derived-mode-p 'sh-mode))))
+    (direct-insert ")" sh-mode-p)
+
+    ))
+
+
+  ;; (cond ((or (gd-emedit-in-string-p)
+  ;;            (gd-emedit-in-comment-p))
+  ;;        (insert ")"))
+  ;;       ;; Insert ) directly in sh-mode for case ... in syntax.
+  ;;       ((derived-mode-p 'sh-mode)
+  ;;        (insert ")"))
+  ;;       (t
+  ;;        (let ((close (gd-emedit-missing-close)))
+  ;;          (if close
+  ;;              (if (eq ?\) (matching-paren close))
+  ;;                  (insert ")"))
+  ;;            (up-list))
+  ;;          ))))
 
 (defun gd-emedit-close-curly ()
   (interactive)
