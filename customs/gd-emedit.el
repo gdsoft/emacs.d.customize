@@ -79,53 +79,7 @@
 \\<gd-emedit-mode-map>"
   )
 
-(defun region-round (start-ins end-ins)
-  (if (region-active-p)
-      (let ((start (region-beginning))
-            (end (region-end)))
-        (setq mark-active nil)
-        (goto-char start)
-        (insert start-ins)
-        (goto-char (+ end (length end-ins)))
-        (insert end-ins)
-        (goto-char (+ start (length start-ins)))
-        t)))
-
-(defun direct-insert (ins &rest args)
-  (defvar direct-p-list '(gd-emedit-in-string-p gd-emedit-in-comment-p))
-  (nconc direct-p-list args)
-
-  (defvar result nil)
-  (catch 'break
-    (dolist (direct-p direct-p-list)
-      (when (funcall direct-p)
-        (insert ins)
-        (setq result t)
-        (throw 'break result))))
-  result)
-
-(defun pair-insert (start-ins end-ins)
-  (insert start-ins)
-  (insert end-ins)
-  (backward-char (length end-ins))
-  t)
-
-(defun gd-emedit-open (start-ins end-ins &optional special-open)
-  (or (region-round start-ins end-ins)
-      (direct-insert start-ins)
-      (or (and special-open (funcall special-open))
-          (pair-insert start-ins end-ins))))
-
-(defun gd-emedit-close (end-ins &rest args)
-  (or (apply 'direct-insert end-ins args)
-      (let ((close (gd-emedit-missing-close)))
-        (if close
-            (if (eq (string-to-char end-ins) (matching-paren close))  ;; TODO
-                (insert end-ins))
-          (up-list)))))
-
 ;;;;;;;;;;;;;;;;; Interactive functions ;;;;;;;;;;;;;;;;;;;;;;
-
 (defun gd-emedit-open-round ()
   (interactive)
   (gd-emedit-open "(" ")"))
@@ -938,6 +892,51 @@ If current line is not blank, do `gd-emedit-kill' first, re-indent line if rest 
       (indent-region bound-start bound-end))))
 
 ;;;;;;;;;;;;;;;;; Utils functions ;;;;;;;;;;;;;;;;;;;;;;
+(defun region-round (start-ins end-ins)
+  (if (region-active-p)
+      (let ((start (region-beginning))
+            (end (region-end)))
+        (setq mark-active nil)
+        (goto-char start)
+        (insert start-ins)
+        (goto-char (+ end (length end-ins)))
+        (insert end-ins)
+        (goto-char (+ start (length start-ins)))
+        t)))
+
+(defun direct-insert (ins &rest args)
+  (defvar direct-p-list '(gd-emedit-in-string-p gd-emedit-in-comment-p))
+  (nconc direct-p-list args)
+
+  (defvar result nil)
+  (catch 'break
+    (dolist (direct-p direct-p-list)
+      (when (funcall direct-p)
+        (insert ins)
+        (setq result t)
+        (throw 'break result))))
+  result)
+
+(defun pair-insert (start-ins end-ins)
+  (insert start-ins)
+  (insert end-ins)
+  (backward-char (length end-ins))
+  t)
+
+(defun gd-emedit-open (start-ins end-ins &optional special-open)
+  (or (region-round start-ins end-ins)
+      (direct-insert start-ins)
+      (or (and special-open (funcall special-open))
+          (pair-insert start-ins end-ins))))
+
+(defun gd-emedit-close (end-ins &rest args)
+  (or (apply 'direct-insert end-ins args)
+      (let ((close (gd-emedit-missing-close)))
+        (if close
+            (if (eq (string-to-char end-ins) (matching-paren close))  ;; TODO
+                (insert end-ins))
+          (up-list)))))
+
 (defun gd-emedit-current-parse-state ()
   (let ((point (point)))
     (beginning-of-defun)
