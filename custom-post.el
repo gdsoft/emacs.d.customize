@@ -18,6 +18,7 @@
             (setq tab-width 4)
             (setq indent-tabs-mode t)))
 
+(require 'sly-autoloads)
 (let ((require-list '(
                       install-elisp
                       custom-evil

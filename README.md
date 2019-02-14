@@ -40,7 +40,7 @@ make compile compile-contrib
 
 #(add-to-list 'load-path "~/dir/to/cloned/sly")
 #(require 'sly-autoloads)
-#(setq inferior-lisp-program "/opt/sbcl/bin/sbcl")
+#(setq inferior-lisp-program "/usr/bin/sbcl")
 ```
 
 -------------------------------------------------------------------------------
