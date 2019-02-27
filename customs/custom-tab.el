@@ -8,14 +8,6 @@
 (global-set-key [(meta j)] 'awesome-tab-backward)
 (global-set-key [(meta k)] 'awesome-tab-forward)
 
-(custom-set-faces
- '(awesome-tab-selected
-   ((t (:inherit awesome-tab-default :foreground "green3" :overline "yellow" :underline "yellow" :weight ultra-bold :width semi-expanded))))
- '(awesome-tab-unselected
-   ((t (:inherit awesome-tab-default :foreground "cyan" :overline "yellow" :underline "yellow" :weight ultra-bold :width semi-expanded))))
- '(awesome-tab-separator
-   ((t (:inherit awesome-tab-default :box (:line-width 2 :color "yellow" :style pressed-button) :height 0.1)))))
-
 (defun awesome-tab-hide-tab-function (x)
   "Awesome tab hide tab function (X)."
   (let ((name (format "%s" x)))

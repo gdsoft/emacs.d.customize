@@ -6,8 +6,8 @@
 ;; Maintainer: Andy Stewart <lazycat.manatee@gmail.com>
 ;; Copyright (C) 2018, Andy Stewart, all rights reserved.
 ;; Created: 2018-09-17 22:14:34
-;; Version: 1.5
-;; Last-Updated: 2018-12-27 22:25:21
+;; Version: 1.7
+;; Last-Updated: 2019-02-23 21:14:53
 ;;           By: Andy Stewart
 ;; URL: http://www.emacswiki.org/emacs/download/awesome-tab.el
 ;; Keywords:
@@ -15,7 +15,7 @@
 ;;
 ;; Features that might be required by this library:
 ;;
-;;
+;; `powerline'
 ;;
 
 ;;; This file is NOT part of GNU Emacs
@@ -44,7 +44,7 @@
 
 ;;; Installation:
 ;;
-;; Put awesome-tab.el to your load-path.
+;; Put powerline-separators.el, powerline-themes.el, powerline.el, awesome-tab.el to your load-path.
 ;; The load-path is usually ~/elisp/.
 ;; It's set in your ~/.emacs like this:
 ;; (add-to-list 'load-path (expand-file-name "~/elisp"))
@@ -85,6 +85,10 @@
 ;;
 
 ;;; Change log:
+;;
+;; 2019/02/23
+;;      * Significantly optimize the performance of switching tab by avoiding excessive calls `project-current'.
+;;      * Use `powerline' render tab, it's beautiful!!!
 ;;
 ;; 2018/12/27
 ;;      * Tab will hide if ```awesome-tab-hide-tab-function``` return t, you can write your own code to customize hide rules.
@@ -136,6 +140,7 @@
 ;;
 
 ;;; Require
+(require 'powerline)
 
 ;;; Code:
 ;;;;;;;;;;;;;;;;;;;;;;; Awesome-Tab source code ;;;;;;;;;;;;;;;;;;;;;;;
@@ -168,6 +173,12 @@ visible."
   :group 'awesome-tab
   :type 'boolean)
 
+(defcustom awesome-tab-common-group-name "Common"
+  "If the current buffer does not belong to any project,
+the group name uses the name of this variable."
+  :group 'awesome-tab
+  :type 'string)
+
 (defvar awesome-tab-inhibit-functions '(awesome-tab-default-inhibit-function)
   "List of functions to be called before displaying the tab bar.
 Those functions are called one by one, with no arguments, until one of
@@ -191,10 +202,6 @@ selected tab.")
   "Function that obtains a button label displayed on the tab bar.
 The function is passed a button name should return a propertized
 string to display.")
-
-(defvar awesome-tab-home-function nil
-  "Function called when clicking on the tab bar home button.
-The function is passed the mouse event received.")
 
 (defvar awesome-tab-scroll-left-function 'awesome-tab-scroll-left
   "Function that scrolls tabs on left.
@@ -492,24 +499,19 @@ current cached copy."
 ;;; Faces
 ;;
 (defface awesome-tab-default
-  '(
-    (t
-     :inherit default
-     :height 1.3
-     ))
+  '((t
+     (:background "black" :foreground "black")))
   "Default face used in the tab bar."
   :group 'awesome-tab)
 
 (defface awesome-tab-unselected
   '((t
-     (:inherit awesome-tab-default
-               :foreground "dark green" :overline "dark green")))
+     (:background "#3D3C3D" :foreground "grey50")))
   "Face used for unselected tabs."
   :group 'awesome-tab)
 
 (defface awesome-tab-selected
-  '((t (:inherit awesome-tab-default :weight ultra-bold :width semi-expanded
-                 :foreground "green3" :overline "green3")))
+  '((t (:background "#31343E" :foreground "white")))
   "Face used for the selected tab."
   :group 'awesome-tab)
 
@@ -520,50 +522,26 @@ current cached copy."
   "Face used to highlight a tab during mouse-overs."
   :group 'awesome-tab)
 
-(defface awesome-tab-separator
-  '((t
-     :inherit awesome-tab-default
-     :height 0.1
-     ))
-  "Face used for separators between tabs."
-  :group 'awesome-tab)
-
 (defface awesome-tab-button
   '((t
-     :inherit awesome-tab-default
-     :box (:line-width 1 :color "white" :style released-button)
-     :foreground "dark red"
+     :box nil
      ))
   "Face used for tab bar buttons."
   :group 'awesome-tab)
 
 (defface awesome-tab-button-highlight
   '((t
-     :inherit awesome-tab-default
      ))
   "Face used to highlight a button during mouse-overs."
   :group 'awesome-tab)
 
-(defcustom awesome-tab-background-color nil
+(defcustom awesome-tab-background-color "black"
   "*Background color of the tab bar.
 By default, use the background color specified for the
 `awesome-tab-default' face (or inherited from another face), or the
 background color of the `default' face otherwise."
   :group 'awesome-tab
-  :type '((t
-           :inherit default
-           )))
-
-(defsubst awesome-tab-background-color ()
-  "Return the background color of the tab bar."
-  (or awesome-tab-background-color
-      (let* ((face 'awesome-tab-default)
-             (color (face-background face)))
-        (while (null color)
-          (or (facep (setq face (face-attribute face :inherit)))
-              (setq face 'default))
-          (setq color (face-background face)))
-        color)))
+  :type 'face)
 
 ;;; Buttons and separator look and feel
 ;;
@@ -591,22 +569,6 @@ list of image specifications.
 If IMAGE is non-nil, try to use that image, else use STRING.
 If only the ENABLED-BUTTON image is provided, a DISABLED-BUTTON image
 is derived from it.")
-
-;;; Home button
-;;
-(defvar awesome-tab-home-button-value nil
-  "Value of the home button.")
-
-(defcustom awesome-tab-home-button
-  (quote (("") ""))
-  "The home button.
-The variable `awesome-tab-button-widget' gives details on this widget."
-  :group 'awesome-tab
-  :type awesome-tab-button-widget
-  :set '(lambda (variable value)
-          (custom-set-default variable value)
-          ;; Schedule refresh of button value.
-          (setq awesome-tab-home-button-value nil)))
 
 ;;; Scroll left button
 ;;
@@ -642,32 +604,10 @@ The variable `awesome-tab-button-widget' gives details on this widget."
 
 ;;; Separator
 ;;
-(defconst awesome-tab-separator-widget
-  '(cons (choice (string)
-                 (number :tag "Space width" 0.2))
-         (repeat :tag "Image"
-                 :extra-offset 2
-                 (restricted-sexp :tag "Spec"
-                                  :match-alternatives (listp))))
-  "Widget for editing a tab bar separator.
-A separator is specified as a pair (STRING-OR-WIDTH . IMAGE) where
-STRING-OR-WIDTH is a string value or a space width, and IMAGE a list
-of image specifications.
-If IMAGE is non-nil, try to use that image, else use STRING-OR-WIDTH.
-The value (\"\"), or (0) hide separators.")
 
-(defvar awesome-tab-separator-value nil
-  "Value of the separator used between tabs.")
-
-(defcustom awesome-tab-separator (list 0.2)
-  "Separator used between tabs.
-The variable `awesome-tab-separator-widget' gives details on this widget."
-  :group 'awesome-tab
-  :type awesome-tab-separator-widget
-  :set '(lambda (variable value)
-          (custom-set-default variable value)
-          ;; Schedule refresh of separator value.
-          (setq awesome-tab-separator-value nil)))
+(defvar awesome-tab-height 22)
+(defvar awesome-tab-style-left (powerline-wave-right 'awesome-tab-default nil awesome-tab-height))
+(defvar awesome-tab-style-right (powerline-wave-left nil 'awesome-tab-default awesome-tab-height))
 
 (defsubst awesome-tab-find-image (specs)
   "Find an image, choosing one of a list of image specifications.
@@ -857,38 +797,10 @@ element."
                       'face 'awesome-tab-button
                       'pointer 'arrow)))))
 
-(defun awesome-tab-line-separator ()
-  "Return the display representation of a tab bar separator.
-That is, a propertized string used as an `header-line-format' template
-element."
-  (let ((image (awesome-tab-find-image (cdr awesome-tab-separator))))
-    ;; Cache the separator display value in variable
-    ;; `awesome-tab-separator-value'.
-    (setq awesome-tab-separator-value
-          (cond
-           (image
-            (propertize " "
-                        'face 'awesome-tab-separator
-                        'pointer 'arrow
-                        'display (awesome-tab-normalize-image image)))
-           ((numberp (car awesome-tab-separator))
-            (propertize " "
-                        'face 'awesome-tab-separator
-                        'pointer 'arrow
-                        'display (list 'space
-                                       :width (car awesome-tab-separator))))
-           ((propertize (or (car awesome-tab-separator) " ")
-                        'face 'awesome-tab-separator
-                        'pointer 'arrow))))
-    ))
-
 (defsubst awesome-tab-line-buttons (tabset)
   "Return a list of propertized strings for tab bar buttons.
 TABSET is the tab set used to choose the appropriate buttons."
   (list
-   (if awesome-tab-home-function
-       (car awesome-tab-home-button-value)
-     (cdr awesome-tab-home-button-value))
    (if (> (awesome-tab-start tabset) 0)
        (car awesome-tab-scroll-left-button-value)
      (cdr awesome-tab-scroll-left-button-value))
@@ -896,7 +808,7 @@ TABSET is the tab set used to choose the appropriate buttons."
           (1- (length (awesome-tab-tabs tabset))))
        (car awesome-tab-scroll-right-button-value)
      (cdr awesome-tab-scroll-right-button-value))
-   awesome-tab-separator-value))
+   ))
 
 (defsubst awesome-tab-line-tab (tab)
   "Return the display representation of tab TAB.
@@ -914,19 +826,15 @@ Call `awesome-tab-tab-label-function' to obtain a label for TAB."
                      'awesome-tab-selected
                    'awesome-tab-unselected)
            'pointer 'hand)
-          awesome-tab-separator-value))
+          ))
 
 (defun awesome-tab-line-format (tabset)
   "Return the `header-line-format' value to display TABSET."
   (let* ((sel (awesome-tab-selected-tab tabset))
          (tabs (awesome-tab-view tabset))
-         (padcolor (awesome-tab-background-color))
+         (padcolor awesome-tab-background-color)
          atsel elts)
     ;; Initialize buttons and separator values.
-    (or awesome-tab-separator-value
-        (awesome-tab-line-separator))
-    (or awesome-tab-home-button-value
-        (awesome-tab-line-button 'home))
     (or awesome-tab-scroll-left-button-value
         (awesome-tab-line-button 'scroll-left))
     (or awesome-tab-scroll-right-button-value
@@ -1255,19 +1163,6 @@ Returns non-nil if the new state is enabled.
   "Display buffers in the tab bar."
   :group 'awesome-tab)
 
-(defcustom awesome-tab-buffer-home-button (quote (("") ""))
-  "The home button displayed when showing buffer tabs.
-The enabled button value is displayed when showing tabs for groups of
-buffers, and the disabled button value is displayed when showing
-buffer tabs.
-The variable `awesome-tab-button-widget' gives details on this widget."
-  :group 'awesome-tab-buffer
-  :type awesome-tab-button-widget
-  :set '(lambda (variable value)
-          (custom-set-default variable value)
-          ;; Schedule refresh of button value.
-          (setq awesome-tab-home-button-value nil)))
-
 (defvar awesome-tab-buffer-list-function 'awesome-tab-buffer-list
   "Function that returns the list of buffers to show in tabs.
 That function is called with no arguments and must return a list of
@@ -1322,7 +1217,7 @@ Return the the first group where the current buffer is."
                           (buffer-name)
                           (if awesome-tab-buffer-groups-function
                               (funcall awesome-tab-buffer-groups-function)
-                            '("Common")))))
+                            '(awesome-tab-common-group-name)))))
               (and awesome-tab-buffer-list-function
                    (funcall awesome-tab-buffer-list-function)))
              #'(lambda (e1 e2)
@@ -1366,9 +1261,7 @@ Return the the first group where the current buffer is."
 
 (defsubst awesome-tab-buffer-show-groups (flag)
   "Set display of tabs for groups of buffers to FLAG."
-  (setq awesome-tab--buffer-show-groups flag
-        ;; Redisplay the home button.
-        awesome-tab-home-button-value nil))
+  (setq awesome-tab--buffer-show-groups flag))
 
 (defun awesome-tab-buffer-tabs ()
   "Return the buffers to display on the tab bar, in a tab set."
@@ -1388,40 +1281,14 @@ by the variable `awesome-tab-button-label'.
 When NAME is 'home, return a different ENABLED button if showing tabs
 or groups.  Call the function `awesome-tab-button-label' otherwise."
   (let ((lab (awesome-tab-button-label name)))
-    (when (eq name 'home)
-      (let* ((btn awesome-tab-buffer-home-button)
-             (on  (awesome-tab-find-image (cdar btn)))
-             (off (awesome-tab-find-image (cddr btn))))
-        ;; When `awesome-tab-buffer-home-button' does not provide a value,
-        ;; default to the enabled value of `awesome-tab-home-button'.
-        (if on
-            (awesome-tab-normalize-image on 1)
-          (setq on (get-text-property 0 'display (car lab))))
-        (if off
-            (awesome-tab-normalize-image off 1)
-          (setq off (get-text-property 0 'display (car lab))))
-        (setcar lab
-                (if awesome-tab--buffer-show-groups
-                    (propertize (or (caar btn) (car lab)) 'display on)
-                  (propertize (or (cadr btn) (car lab)) 'display off)))
-        ))
     lab))
 
 (defun awesome-tab-buffer-tab-label (tab)
   "Return a label for TAB.
 That is, a string used to represent it on the tab bar."
-  (let ((label  (if awesome-tab--buffer-show-groups
-                    (format " [%s] " (awesome-tab-tab-tabset tab))
-                  (format " %s " (awesome-tab-tab-value tab)))))
-    ;; Unless the tab bar auto scrolls to keep the selected tab
-    ;; visible, shorten the tab label to keep as many tabs as possible
-    ;; in the visible area of the tab bar.
-    (if awesome-tab-auto-scroll-flag
-        label
-      (awesome-tab-shorten
-       label (max 1 (/ (window-width)
-                       (length (awesome-tab-view
-                                (awesome-tab-current-tabset)))))))))
+  (powerline-render (list awesome-tab-style-left
+                          (format " %s  " (car tab))
+                          awesome-tab-style-right)))
 
 (defun awesome-tab-buffer-select-tab (event tab)
   "On mouse EVENT, select TAB."
@@ -1437,18 +1304,6 @@ That is, a string used to represent it on the tab bar."
     ;; Don't show groups.
     (awesome-tab-buffer-show-groups nil)
     ))
-
-(defun awesome-tab-buffer-click-on-home (event)
-  "Handle a mouse click EVENT on the tab bar home button.
-mouse-1, toggle the display of tabs for groups of buffers.
-mouse-3, close the current buffer."
-  (let ((mouse-button (event-basic-type event)))
-    (cond
-     ((eq mouse-button 'mouse-1)
-      (awesome-tab-buffer-show-groups (not awesome-tab--buffer-show-groups)))
-     ((eq mouse-button 'mouse-3)
-      (kill-buffer nil))
-     )))
 
 (defun awesome-tab-buffer-track-killed ()
   "Hook run just before actually killing a buffer.
@@ -1485,7 +1340,6 @@ Run as `awesome-tab-init-hook'."
         awesome-tab-tab-label-function 'awesome-tab-buffer-tab-label
         awesome-tab-select-tab-function 'awesome-tab-buffer-select-tab
         awesome-tab-button-label-function 'awesome-tab-buffer-button-label
-        awesome-tab-home-function 'awesome-tab-buffer-click-on-home
         )
   (add-hook 'kill-buffer-hook 'awesome-tab-buffer-track-killed))
 
@@ -1498,7 +1352,6 @@ Run as `awesome-tab-quit-hook'."
         awesome-tab-tab-label-function nil
         awesome-tab-select-tab-function nil
         awesome-tab-button-label-function nil
-        awesome-tab-home-function nil
         )
   (remove-hook 'kill-buffer-hook 'awesome-tab-buffer-track-killed))
 
@@ -1726,34 +1579,30 @@ Optional argument REVERSED default is move backward, if reversed is non-nil move
 ;; Rules to control buffer's group rules.
 (defvar awesome-tab-groups-hash (make-hash-table :test 'equal))
 
-(defun awesome-tab-init-groups-name ()
-  (interactive)
-  (setq awesome-tab-groups-hash (make-hash-table :test 'equal)))
+(defun awesome-tab-project-name ()
+  (let ((project-name (cdr (project-current))))
+    (if project-name
+        (format "Project: %s" (expand-file-name project-name))
+      awesome-tab-common-group-name)))
 
 (defun awesome-tab-get-group-name (buf)
   (let ((group-name (gethash buf awesome-tab-groups-hash)))
+    ;; Return group name cache if it exists for improve performance.
     (if group-name
         group-name
-      (awesome-tab-set-group-name buf))))
-
-(defun awesome-tab-in-project-p ()
-  (cdr (project-current)))
-
-(defun awesome-tab-project-name ()
-  (format "Project: %s" (expand-file-name (cdr (project-current)))))
-
-(defun awesome-tab-set-group-name (buf)
-  (with-current-buffer buf
-    (let ((project-name (awesome-tab-project-name)))
-      (puthash buf project-name awesome-tab-groups-hash)
-      project-name)))
+      ;; Otherwise try get group name with `project-current'.
+      ;; `project-current' is very slow, it will slow down Emacs if you call it when switch buffer.
+      (with-current-buffer buf
+        (let ((project-name (awesome-tab-project-name)))
+          (puthash buf project-name awesome-tab-groups-hash)
+          project-name)))))
 
 (defun awesome-tab-buffer-groups ()
   "`awesome-tab-buffer-groups' control buffers' group rules.
 
 Group awesome-tab with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
 All buffer name start with * will group to \"Emacs\".
-Other buffer group by `awesome-tab-in-project-p' with project name."
+Other buffer group by `awesome-tab-get-group-name' with project name."
   (list
    (cond
     ((or (string-equal "*" (substring (buffer-name) 0 1))
@@ -1775,10 +1624,7 @@ Other buffer group by `awesome-tab-in-project-p' with project name."
     ((memq major-mode '(org-mode org-agenda-mode diary-mode))
      "OrgMode")
     (t
-     (if (awesome-tab-in-project-p)
-         (awesome-tab-get-group-name (current-buffer))
-       "Common"))
-    )))
+     (awesome-tab-get-group-name (current-buffer))))))
 
 ;; Helm source for switching group in helm.
 (defvar helm-source-awesome-tab-group nil)
@@ -1789,8 +1635,8 @@ Other buffer group by `awesome-tab-in-project-p' with project name."
         (when (featurep 'helm)
           (require 'helm)
           (helm-build-sync-source "Awesome-Tab Group"
-                                  :candidates #'awesome-tab-get-groups
-                                  :action '(("Switch to group" . awesome-tab-switch-group))))))
+            :candidates #'awesome-tab-get-groups
+            :action '(("Switch to group" . awesome-tab-switch-group))))))
 
 ;; Ivy source for switching group in ivy.
 (defvar ivy-source-awesome-tab-group nil)
