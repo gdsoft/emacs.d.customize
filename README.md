@@ -81,6 +81,7 @@ git config --global ghq.root "${GOPATH}/src"
 
 # bingo (Download from github.com/saibing/bingo)
 ghq look bingo
+git pull
 GO111MODULE=on go install
 ```
 
