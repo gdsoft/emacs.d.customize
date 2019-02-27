@@ -21,9 +21,18 @@ ln -s  ~/.emacs.d.customize/custom-post.el ~/.emacs.d/custom-post.el
 
 ``` shell
 cd  ~/.emacs.d.customize
-git clone --depth=1 https://github.com/akermu/emacs-libvterm.git
-
-cd emacs-libvterm
+if [[ -e emacs-libvterm ]]
+then
+    cd emacs-libvterm
+    git pull
+else
+    git clone --depth=1 https://github.com/akermu/emacs-libvterm.git
+    cd emacs-libvterm
+fi
+if [[ -e build ]]
+then
+    rm -rf build
+fi
 mkdir build
 cd build
 cmake ..
@@ -34,8 +43,14 @@ make
 
 ``` shell
 cd  ~/.emacs.d.customize
-git clone --depth=1 https://github.com/joaotavora/sly.git
-cd sly
+if [[ -e sly ]]
+then
+    cd sly
+    git pull
+else
+    git clone --depth=1 https://github.com/joaotavora/sly.git
+    cd sly
+fi
 make compile compile-contrib
 
 #(add-to-list 'load-path "~/dir/to/cloned/sly")
@@ -99,7 +114,7 @@ rustup component add rls rust-analysis rust-src
 ## JS ##
 
 ``` shell
-npm install -g eslint 
+npm install -g eslint
 npm install -g prettier
 npm install -g typescript
 ```
@@ -117,7 +132,7 @@ npm install -g typescript
                        (list (expand-file-name "~/myproject/include/")))))))
 
 ;; .dir-locals.el's template file
-;; copy dir-locals.tmpl to you project directory and rename to .dir-locals.el                       
+;; copy dir-locals.tmpl to you project directory and rename to .dir-locals.el
 ```
 
 -------------------------------------------------------------------------------
@@ -135,11 +150,6 @@ bear make
 ;; OR
 ;; scan-build https://github.com/rizsotto/scan-build.git
 intercept-build make
-```
-
-- Golang
-``` shell
-go get -u github.com/sourcegraph/go-langserver
 ```
 
 - Rust
@@ -218,28 +228,6 @@ sudo apt-get install aspell-en
 
 # Arch
 sudo yay -S aspell-en
-```
--------------------------------------------------------------------------------
-
-## Quicklisp ##
-
-### Install ###
-
-- see quicklisp/Install
-
-### Let Emacs know about SBCL and Quicklisp ###
-
-- First in SBCL run:
-
-```
-(ql:quickload "quicklisp-slime-helper")
-```
-
-- Tell Emacs how to launch your Lisp environment
-
-```
-(setq inferior-lisp-program "sbcl")
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
 ```
 
 -------------------------------------------------------------------------------
