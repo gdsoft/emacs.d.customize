@@ -19,6 +19,8 @@
             (setq indent-tabs-mode t)))
 
 (require 'sly-autoloads)
+(global-set-key [f10] 'sly)
+
 (let ((require-list '(
                       install-elisp
                       custom-evil
@@ -26,8 +28,8 @@
                       custom-tab
                       custom-shell
                                         ; custom-rust
-                                        ;                     custom-pair
-                      custom-edit
+                      custom-pair
+                                        ; custom-edit
                       custom-rails
                       )))
   (dolist (req require-list) (require req)))

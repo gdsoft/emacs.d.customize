@@ -41,7 +41,8 @@
 (define-key gd-emedit-mode-map (kbd "]") 'gd-emedit-close-bracket)
 (define-key gd-emedit-mode-map (kbd "}") 'gd-emedit-close-curly)
 (define-key gd-emedit-mode-map (kbd "%") 'gd-emedit-match-paren)
-(define-key gd-emedit-mode-map (kbd "\"") 'gd-emedit-double-quote)
+(define-key gd-emedit-mode-map (kbd "\"")  'gd-emedit-double-quote)
+(evil-define-key 'motion gd-emedit-mode-map (kbd "\"") 'gd-emedit-double-quote)
 (define-key gd-emedit-mode-map (kbd "M-o") 'gd-emedit-backward-delete)
 (define-key gd-emedit-mode-map (kbd "C-k") 'gd-emedit-kill)
 (define-key gd-emedit-mode-map (kbd "M-\"") 'gd-emedit-wrap-double-quote)
@@ -51,7 +52,7 @@
 (define-key gd-emedit-mode-map (kbd "M-)") 'gd-emedit-unwrap)
 (define-key gd-emedit-mode-map (kbd "M-p") 'gd-emedit-jump-right)
 (define-key gd-emedit-mode-map (kbd "M-n") 'gd-emedit-jump-left)
-(define-key gd-emedit-mode-map (kbd "M-:") 'gd-emedit-jump-out-edit-and-newline)
+(define-key gd-emedit-mode-map (kbd "M-:") 'gd-emedit-jump-out-pair-and-newline)
 
 (provide 'custom-edit)
 ;;; custom-edit.el ends here

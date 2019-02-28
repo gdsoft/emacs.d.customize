@@ -170,7 +170,12 @@
 (defun gd-emedit-double-quote ()
   (interactive)
   (cond ((gd-emedit-in-string-p)
-         (insert "\\\""))
+         (if (and (derived-mode-p 'go-mode)
+                  (equal (save-excursion (nth 3 (gd-emedit-current-parse-state)))96))
+             ;; When current mode is golang.
+             ;; Don't insert \" in string that wrap by `...`
+             (insert "\"")
+           (insert "\\\"")))
         ((gd-emedit-in-comment-p)
          (insert "\""))
         (t
