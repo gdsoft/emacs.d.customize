@@ -6,6 +6,8 @@
 
 ### Install ###
 ```
+mv ~/.emacs.d ~/.emacs.d.bak
+git clone --depth 1 https://github.com/seagle0128/.emacs.d.git ~/.emacs.d
 git clone https://github.com/gdsoft/emacs.d.customize.git ~/.emacs.d.customize
 ```
 
