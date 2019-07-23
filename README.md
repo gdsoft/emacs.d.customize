@@ -6,7 +6,7 @@
 
 ### Install ###
 ```
-git clone https://github.com/guodongsoft/emacs.d.customize.git ~/.emacs.d.customize
+git clone https://github.com/gdsoft/emacs.d.customize.git ~/.emacs.d.customize
 ```
 
 ### Create custom link file ###
