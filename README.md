@@ -220,3 +220,9 @@ find . -name "*.el" -or -name "*.c" | etags -
 ```
 
 -------------------------------------------------------------------------------
+
+## Not need to input password ##
+
+``` shell
+git config --global credential.helper store
+```
