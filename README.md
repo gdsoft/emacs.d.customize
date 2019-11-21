@@ -6,22 +6,21 @@
 
 ### Install ###
 ```
-mv ~/.emacs.d ~/.emacs.d.bak
-git clone --depth 1 https://github.com/seagle0128/.emacs.d.git ~/.emacs.d
-git clone https://github.com/gdsoft/emacs.d.customize.git ~/.emacs.d.customize
+git clone --depth 1 https://github.com/seagle0128/.emacs.d.git ~/.config/emacs
+git clone https://github.com/gdsoft/emacs.d.customize.git ~/.config/emacs.me
 ```
 
 ### Create custom link file ###
 ```
-rm  ~/.emacs.d/custom.el
-ln -s  ~/.emacs.d.customize/custom.el ~/.emacs.d/custom.el
-ln -s  ~/.emacs.d.customize/custom-post.el ~/.emacs.d/custom-post.el
+rm  ~/.config/emacs/custom.el
+ln -s  ~/.config/emacs.me/custom.el ~/.config/emacs/custom.el
+ln -s  ~/.config/emacs.me/custom-post.el ~/.config/emacs/custom-post.el
 ```
 
 ### emacs-libvterm ###
 
 ``` shell
-cd  ~/.emacs.d.customize
+cd ~/.config/emacs.me
 git clone --depth=1 https://github.com/akermu/emacs-libvterm.git
 
 cd emacs-libvterm
@@ -34,7 +33,7 @@ make
 ### sly ###
 
 ``` shell
-cd  ~/.emacs.d.customize
+cd ~/.config/emacs.me
 git clone --depth=1 https://github.com/joaotavora/sly.git
 cd sly
 make compile compile-contrib
@@ -171,7 +170,7 @@ intercept-build make
 ## ag ##
 
 ``` shell
-apt-get install silversearcher-ag
+sudo apt-get install silversearcher-ag
 brew install the_silver_searcher
 ```
 
