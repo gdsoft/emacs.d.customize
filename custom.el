@@ -104,11 +104,11 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (let ((load-path-list
-       '("~/.emacs.d.customize/customs"
-         "~/.emacs.d.customize/sly"
-         "~/.emacs.d.customize/download"
-         "~/.emacs.d.customize/download/common"
-         "~/.emacs.d.customize/download/awesome")))
+       '("~/.config/emacs.me/customs"
+         "~/.config/emacs.me/sly"
+         "~/.config/emacs.me/download"
+         "~/.config/emacs.me/download/common"
+         "~/.config/emacs.me/download/awesome")))
   (nconc load-path load-path-list))
 
 ;;; custom.el ends here

@@ -22,7 +22,7 @@
 ;; - vterm-color-white-bg
 
 ;;; Code:
-(let* ((libvterm-dir "~/.emacs.d.customize/emacs-libvterm")
+(let* ((libvterm-dir "~/.config/emacs.me/emacs-libvterm")
        (vterm-el (expand-file-name "vterm.el" libvterm-dir)))
   (when (file-exists-p vterm-el)
     (push libvterm-dir load-path)
