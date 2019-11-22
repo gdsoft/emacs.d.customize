@@ -23,8 +23,8 @@
                       custom-evil
                       custom-encoding
                       custom-tab
-                      custom-shell
-                                        ;       custom-rust
+                      ;custom-shell
+                      ;custom-rust
                       custom-pair
                       custom-rails
                       )))
