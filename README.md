@@ -100,7 +100,7 @@ rustup component add rls rust-analysis rust-src
 ## JS ##
 
 ``` shell
-npm install -g eslint 
+npm install -g eslint
 npm install -g prettier
 npm install -g typescript
 ```
@@ -118,7 +118,7 @@ npm install -g typescript
                        (list (expand-file-name "~/myproject/include/")))))))
 
 ;; .dir-locals.el's template file
-;; copy dir-locals.tmpl to you project directory and rename to .dir-locals.el                       
+;; copy dir-locals.tmpl to you project directory and rename to .dir-locals.el
 ```
 
 -------------------------------------------------------------------------------
