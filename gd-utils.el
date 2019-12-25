@@ -26,7 +26,7 @@
                (executable-find "cmdproxy")))))
 
     (if shell-name shell-name
-      (error "Can't find 'shell' command in PATH!!"))))
+      (error "Can't find 'shell' command in PATH!!!"))))
 
 (provide 'gd-utils)
 ;;; gd-utils.el ends here
