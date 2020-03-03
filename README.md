@@ -17,19 +17,6 @@ ln -s  ~/.config/emacs.me/custom.el ~/.config/emacs/custom.el
 ln -s  ~/.config/emacs.me/custom-post.el ~/.config/emacs/custom-post.el
 ```
 
-### emacs-libvterm ###
-
-``` shell
-cd ~/.config/emacs.me
-git clone --depth=1 https://github.com/akermu/emacs-libvterm.git
-
-cd emacs-libvterm
-mkdir build
-cd build
-cmake ..
-make
-```
-
 ### sly ###
 
 ``` shell

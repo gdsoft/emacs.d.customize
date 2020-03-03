@@ -22,37 +22,16 @@
 ;; - vterm-color-white-bg
 
 ;;; Code:
-(let* ((libvterm-dir "~/.config/emacs.me/emacs-libvterm")
-       (vterm-el (expand-file-name "vterm.el" libvterm-dir)))
-  (when (file-exists-p vterm-el)
-    (push libvterm-dir load-path)
-    (let (vterm-install)
-      (require 'vterm))
 
-    (use-package shell-pop
-      :init
-      (let ((shell-type
-             (if sys/win32p
-                 '("eshell" "*eshell*" (lambda () (eshell)))
-               '("vterm" "vterm" (lambda () (vterm))))))
-
-        (setq shell-pop-shell-type shell-type))
-
-      (require 'shell-pop)
-      (global-set-key [f9] '(lambda ()
-                              "Shell popup."
-                              (interactive)
-                              (if (cl-search "vterm" (buffer-name))
-                                  (shell-pop-out)
-                                (shell-pop-up 1)))))
-    ))
-
-(setq gd-utils-path (file-name-directory custom-file))
-(use-package gd-utils
-  :load-path gd-utils-path
-  :init
-  (require 'gd-utils)
-  (setenv "SHELL" (gd-util-search-shell)))
+;; Shell Pop
+(use-package shell-pop
+  :bind ([f9] . shell-pop)
+  :init (setq shell-pop-window-size 30
+              shell-pop-shell-type
+              (cond ((fboundp 'vterm) '("vterm" "*vterm*" #'vterm))
+                    (sys/win32p '("eshell" "*eshell*" #'eshell))
+                    (t '("terminal" "*terminal*"
+                         (lambda () (term shell-pop-term-shell)))))))
 
 (add-hook 'vterm-mode-hook
           (lambda ()
