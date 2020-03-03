@@ -1,6 +1,6 @@
 ;;; custom.el --- user customization file    -*- no-byte-compile: t -*-
 ;;; Commentary:
-;;;       Copy custom-template.el to custom.el and change the configurations, then restart Emacs.
+;;;       Add or change the configurations in custom.el, then restart Emacs.
 ;;;       Put your own configurations in custom-post.el to override default configurations.
 ;;; Code:
 
@@ -8,12 +8,16 @@
 (setq centaur-full-name "Guo Dong")                 ; User full name
 (setq centaur-mail-address "guodongsoft@163.com")   ; Email address
 ;; (setq centaur-proxy "127.0.0.1:1080")          ; Network proxy
-;; (setq centaur-package-archives 'emacs-china)   ; Package repo: melpa, melpa-mirror, emacs-china netease or tuna
-;; (setq centaur-theme 'classic)                  ; Color theme: default, classic, doom, dark, light or daylight
+;; (setq centaur-server nil)                      ; Enable `server-mode' or not: t or nil
+;; (setq centaur-icon nil)                        ; Display icons or not: t or nil
+;; (setq centaur-package-archives 'emacs-china)   ; Package repo: melpa, melpa-mirror, emacs-china, netease, ustc, tencent or tuna
+;; (setq centaur-theme 'light)                    ; Color theme: auto, default, classic, colorful, dark, light, day or night
 ;; (setq centaur-dashboard nil)                   ; Use dashboard at startup or not: t or nil
-;; (setq centaur-lsp nil)                         ; Set LSP client: lsp-mode, eglot or nil
-;; (setq centaur-ivy-icon nil)                    ; Display icons in ivy or not: t or nil
-;; (setq centaur-benchmark t)                     ; Enable initialization benchmark or not: t or nil
+;; (setq centaur-lsp 'eglot)                      ; Set LSP client: lsp-mode, eglot or nil
+;; (setq centaur-chinese-calendar t)              ; Use Chinese calendar or not: t or nil
+;; (setq centaur-prettify-symbols-alist nil)      ; Alist of symbol prettifications
+;; (setq centaur-prettify-org-symbols-alist nil)  ; Alist of symbol prettifications for `org-mode'
+;; (setq centaur-benchmark-init t)                ; Enable initialization benchmark or not: t or nil
 
 ;; For Emacs devel
 ;; (setq package-user-dir (locate-user-emacs-file (format "elpa-%s" emacs-major-version)))
@@ -22,42 +26,48 @@
 
 ;; Fonts
 (when (display-graphic-p)
-  ;; Set default fonts
-  (cond
-   ((member "Source Code Pro" (font-family-list))
-    (set-face-attribute 'default nil :font "Source Code Pro"))
-   ((member "Menlo" (font-family-list))
-    (set-face-attribute 'default nil :font "Menlo"))
-   ((member "Monaco" (font-family-list))
-    (set-face-attribute 'default nil :font "Monaco"))
-   ((member "DejaVu Sans Mono" (font-family-list))
-    (set-face-attribute 'default nil :font "DejaVu Sans Mono"))
-   ((member "Consolas" (font-family-list))
-    (set-face-attribute 'default nil :font "Consolas")))
+  ;; Set default font
+  (cl-loop for font in '("SF Mono" "Hack" "Source Code Pro" "Fira Code"
+                         "Menlo" "Monaco" "DejaVu Sans Mono" "Consolas")
+           when (font-installed-p font)
+           return (set-face-attribute 'default nil
+                                      :font font
+                                      :height (cond (sys/mac-x-p 130)
+                                                    (sys/win32p 110)
+                                                    (t 100))))
 
-  (cond
-   (sys/mac-x-p
-    (set-face-attribute 'default nil :height 130))
-   (sys/win32p
-    (set-face-attribute 'default nil :height 110)))
+  ;; Specify font for all unicode characters
+  (cl-loop for font in '("Symbola" "Apple Symbols" "Symbol" "icons-in-terminal")
+           when (font-installed-p font)
+           return (set-fontset-font t 'unicode font nil 'prepend))
 
-  ;; Specify fonts for all unicode characters
-  (cond
-   ((member "Apple Color Emoji" (font-family-list))
-    (set-fontset-font t 'unicode "Apple Color Emoji" nil 'prepend))
-   ((member "Symbola" (font-family-list))
-    (set-fontset-font t 'unicode "Symbola" nil 'prepend)))
+  ;; Specify font for Chinese characters
+  (cl-loop for font in '("WenQuanYi Micro Hei" "Microsoft Yahei")
+           when (font-installed-p font)
+           return (set-fontset-font t '(#x4e00 . #x9fff) font)))
 
-  ;; Specify fonts for Chinese characters
-  (cond
-   ((member "WenQuanYi Micro Hei" (font-family-list))
-    (set-fontset-font t '(#x4e00 . #x9fff) "WenQuanYi Micro Hei"))
-   ((member "Microsoft Yahei" (font-family-list))
-    (set-fontset-font t '(#x4e00 . #x9fff) "Microsoft Yahei")))
-  )
+;; Mail
+;; (setq message-send-mail-function 'smtpmail-send-it
+;;       smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+;;       smtpmail-auth-credentials '(("smtp.gmail.com" 587
+;;                                    user-mail-address nil))
+;;       smtpmail-default-smtp-server "smtp.gmail.com"
+;;       smtpmail-smtp-server "smtp.gmail.com"
+;;       smtpmail-smtp-service 587)
+
+;; Calendar
+;; Set location , then press `S' can show the time of sunrise and sunset
+;; (setq calendar-location-name "Chengdu"
+;;       calendar-latitude 30.67
+;;       calendar-longitude 104.07)
 
 ;; Misc.
 ;; (setq confirm-kill-emacs 'y-or-n-p)
+
+;; Display on the specified monitor
+;; (when (and (> (length (display-monitor-attributes-list)) 1)
+;;            (> (display-pixel-width) 1920))
+;;   (set-frame-parameter nil 'left 1920))
 
 ;; Load custom file
 (let* ((load-file-directory (file-name-directory (file-symlink-p load-file-name)))
