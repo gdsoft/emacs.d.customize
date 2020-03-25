@@ -20,7 +20,7 @@
 
 (let ((require-list '(
                       install-elisp
-                      custom-evil
+                                        ;custom-evil
                       custom-encoding
                       custom-tab
                       custom-shell
