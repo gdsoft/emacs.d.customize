@@ -110,6 +110,10 @@
 (global-set-key [remap comment-or-uncomment-region] 'my-comment-or-uncomment-region)
 (global-set-key (kbd "C-c ;") 'comment-or-uncomment-region)
 
+;; ブラウザのため
+;; C-n => C-c /
+(global-set-key (kbd "C-c /") 'next-line)
+
 ;; （Y or N）
 (fset 'yes-or-no-p 'y-or-n-p)
 
